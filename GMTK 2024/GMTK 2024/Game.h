@@ -1,5 +1,7 @@
+// IAN PEREZ BUNUEL
+
 /// <summary>
-/// author Pete Lowe May 2019
+/// author Ian Perez Bunuel, Liam Treacy, Vit Pretchl, Sophia Stanley
 /// you need to change the above line or lose marks
 /// </summary>
 #ifndef GAME_HPP
@@ -10,6 +12,14 @@
 /// Don't forget the endif at the bottom
 /// </summary>
 #include <SFML/Graphics.hpp>
+// Scenes
+#include "Globals.h"
+#include "SplashScreen.h"
+#include "MainMenu.h"
+#include "Pause.h"
+#include "GamePlay.h"
+#include "Scenes.h"
+
 
 class Game
 {
@@ -27,18 +37,20 @@ private:
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
-	
+
 	void setupFontAndText();
-	void setupSprite();
+
+	bool m_exitGame; // control exiting game
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
-	sf::Text m_welcomeMessage; // text used for message on screen
-	sf::Texture m_logoTexture; // texture used for sfml logo
-	sf::Sprite m_logoSprite; // sprite used for sfml logo
-	bool m_exitGame; // control exiting game
+
+	// Scenes
+	SplashScreen splashScreen;
+	MainMenu mainMenu;
+	GamePlay gameplay;
+	Pause pause;
 
 };
 
 #endif // !GAME_HPP
-

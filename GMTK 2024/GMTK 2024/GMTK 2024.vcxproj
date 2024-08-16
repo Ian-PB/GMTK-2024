@@ -20,10 +20,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Pause.cpp" />
+    <ClCompile Include="Scenes.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Pause.h" />
+    <ClInclude Include="Scenes.h" />
+    <ClInclude Include="SplashScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="ASSETS\IMAGES\SFML-LOGO.png">

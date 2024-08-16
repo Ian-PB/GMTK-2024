@@ -1,15 +1,8 @@
-/// <summary>
-/// @author Peter Lowe
-/// @date May 2019
-///
-/// you need to change the above lines or lose marks
-/// </summary>
-
 #include "Game.h"
 #include <iostream>
 
 
-
+Scene SceneClass::currentMode = Scene::SplashScreen;
 /// <summary>
 /// default constructor
 /// setup the window properties
@@ -17,11 +10,10 @@
 /// load and setup thne image
 /// </summary>
 Game::Game() :
-	m_window{ sf::VideoMode{ 800U, 600U, 32U }, "SFML Game" },
-	m_exitGame{false} //when true game will exit
+	m_window{ sf::VideoMode{ SCREEN_WIDTH, SCREEN_HEIGHT, 32U }, "SFML Game" },
+	m_exitGame{ false } //when true game will exit
 {
 	setupFontAndText(); // load font 
-	setupSprite(); // load texture
 }
 
 /// <summary>
@@ -41,7 +33,7 @@ Game::~Game()
 /// if updates run slow then don't render frames
 /// </summary>
 void Game::run()
-{	
+{
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	const float fps{ 60.0f };
@@ -69,13 +61,32 @@ void Game::processEvents()
 	sf::Event newEvent;
 	while (m_window.pollEvent(newEvent))
 	{
-		if ( sf::Event::Closed == newEvent.type) // window message
+		if (sf::Event::Closed == newEvent.type) // window message
 		{
 			m_exitGame = true;
 		}
-		if (sf::Event::KeyPressed == newEvent.type) //user pressed a key
+
+		// Check which scene you are in and do the processEvents() of that scene
+		switch (SceneClass::currentMode)
 		{
-			processKeys(newEvent);
+		case Scene::None:
+			break;
+
+		case Scene::SplashScreen:
+			splashScreen.processEvents(newEvent);
+			break;
+
+		case Scene::MainMenu:
+			mainMenu.processEvents(newEvent);
+			break;
+
+		case Scene::Pause:
+			pause.processEvents(newEvent);
+			break;
+
+		case Scene::GamePlay:
+			gameplay.processEvents(newEvent);
+			break;
 		}
 	}
 }
@@ -103,6 +114,29 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
+
+	// Check which scene you are in and do the update() of that scene
+	switch (SceneClass::currentMode)
+	{
+	case Scene::None:
+		break;
+
+	case Scene::SplashScreen:
+		splashScreen.update(t_deltaTime);
+		break;
+
+	case Scene::MainMenu:
+		mainMenu.update(t_deltaTime);
+		break;
+
+	case Scene::Pause:
+		pause.update(t_deltaTime);
+		break;
+
+	case Scene::GamePlay:
+		gameplay.update(t_deltaTime);
+		break;
+	}
 }
 
 /// <summary>
@@ -110,9 +144,31 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear(sf::Color::White);
-	m_window.draw(m_welcomeMessage);
-	m_window.draw(m_logoSprite);
+	m_window.clear(sf::Color::Black);
+
+	// Check which scene you are in and do the render() of that scene
+	switch (SceneClass::currentMode)
+	{
+	case Scene::None:
+		break;
+
+	case Scene::SplashScreen:
+		splashScreen.render(m_window);
+		break;
+
+	case Scene::MainMenu:
+		mainMenu.render(m_window);
+		break;
+
+	case Scene::Pause:
+		pause.render(m_window);
+		break;
+
+	case Scene::GamePlay:
+		gameplay.render(m_window);
+		break;
+	}
+
 	m_window.display();
 }
 
@@ -125,27 +181,4 @@ void Game::setupFontAndText()
 	{
 		std::cout << "problem loading arial black font" << std::endl;
 	}
-	m_welcomeMessage.setFont(m_ArialBlackfont);
-	m_welcomeMessage.setString("SFML Game");
-	m_welcomeMessage.setStyle(sf::Text::Underlined | sf::Text::Italic | sf::Text::Bold);
-	m_welcomeMessage.setPosition(40.0f, 40.0f);
-	m_welcomeMessage.setCharacterSize(80U);
-	m_welcomeMessage.setOutlineColor(sf::Color::Red);
-	m_welcomeMessage.setFillColor(sf::Color::Black);
-	m_welcomeMessage.setOutlineThickness(3.0f);
-
-}
-
-/// <summary>
-/// load the texture and setup the sprite for the logo
-/// </summary>
-void Game::setupSprite()
-{
-	if (!m_logoTexture.loadFromFile("ASSETS\\IMAGES\\SFML-LOGO.png"))
-	{
-		// simple error message if previous call fails
-		std::cout << "problem loading logo" << std::endl;
-	}
-	m_logoSprite.setTexture(m_logoTexture);
-	m_logoSprite.setPosition(300.0f, 180.0f);
 }
