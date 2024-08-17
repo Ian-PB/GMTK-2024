@@ -32,5 +32,9 @@ private:
 	// View
 	sf::View view;
 
+	// Sprites
+	sf::Sprite tilesSprite;
+	sf::Texture tilesTexture;
+
 
 };

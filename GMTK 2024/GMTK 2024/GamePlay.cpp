@@ -4,6 +4,14 @@
 GamePlay::GamePlay()
 {
 	view.setSize(SCREEN_WIDTH / 1.0f, SCREEN_HEIGHT / 1.0f);
+
+	if (!tilesTexture.loadFromFile("ASSETS\\IMAGES\\tiles.jpg"))
+	{
+		std::cout << "problem loading sprite" << std::endl;
+	}
+	tilesTexture.setRepeated(true);
+	tilesSprite.setTexture(tilesTexture);
+	tilesSprite.setTextureRect(sf::IntRect{ 0, 0, SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10 });
 }
 
 void GamePlay::processEvents(sf::Event t_event)
@@ -46,5 +54,9 @@ void GamePlay::render(sf::RenderWindow& t_window)
 	// Setting the view of this scene
 	t_window.setView(view);
 
+	// Draw ground
+	t_window.draw(tilesSprite);
+
+	// Draw player function called
 	benjamin.draw(t_window);
 }
