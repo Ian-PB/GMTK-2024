@@ -46,7 +46,7 @@ void GamePlay::update(sf::Time t_deltaTime)
 	benjamin.checkDirection();
 
 	// Change the camera to be centered on the player
-	view.setCenter(benjamin.getPos());
+	view.setCenter(benjamin.getCameraPos());
 }
 
 void GamePlay::render(sf::RenderWindow& t_window)

@@ -26,27 +26,55 @@ void Player::move()
 
 	case Direction::Up:
 		movement.y = -speed;
+
+		// Make sure the camera is slightly ahead of the player
+		camPos.y = (position.y + movement.y) - CAM_CHANGE;
+
 		break;
 
 	case Direction::Down:
 		movement.y = speed;
+
+		// Make sure the camera is slightly ahead of the player
+		camPos.y = (position.y + movement.y) + CAM_CHANGE;
+
 		break;
 
 	case Direction::Left:
 		movement.x = -speed;
+
+		// Make sure the camera is slightly ahead of the player
+		camPos.x = (position.x + movement.x) - CAM_CHANGE;
+
 		break;
 
 	case Direction::Right:
 		movement.x = speed;
+
+		// Make sure the camera is slightly ahead of the player
+		camPos.x = (position.x + movement.x) + CAM_CHANGE;
+
 		break;
 	}
+
+
 	position += movement;
 	body.setPosition(position); // change hitbox position
+
+	std::cout << "\n";
 }
+
 
 void Player::checkDirection()
 {
 	direction = Direction::None;
+
+	// Camera change
+	if (direction == Direction::None)
+	{
+		camPos = position;
+	}
+
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{

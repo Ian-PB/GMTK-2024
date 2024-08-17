@@ -20,6 +20,7 @@ public:
 
 	// "Get" functions
 	sf::Vector2f getPos() { return position; }
+	sf::Vector2f getCameraPos() { return camPos; }
 
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
@@ -36,10 +37,14 @@ private:
 
 	// Movement
 	void move();
+	void updateCam();
 
 	sf::Vector2f position;
 	Direction direction;
 	int speed = 10;
 
+	// Camera info needed
+	sf::Vector2f camPos;
+	const int CAM_CHANGE = 50;
 };
 
