@@ -3,6 +3,8 @@
 # include <SFML/Graphics.hpp>
 
 #include "Scenes.h"
+#include "Globals.h"
+#include "Player.h"
 
 
 class Game;
@@ -22,7 +24,13 @@ public:
 
 private:
 
+	// Player Object
+	Player benjamin;
+
 	sf::Vector2f mousePos;
+
+	// View
+	sf::View view;
 
 
 };

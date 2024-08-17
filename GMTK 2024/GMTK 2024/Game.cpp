@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Scene SceneClass::currentMode = Scene::SplashScreen;
+Scene SceneClass::currentMode = Scene::GamePlay;
 /// <summary>
 /// default constructor
 /// setup the window properties
