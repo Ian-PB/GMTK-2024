@@ -20,7 +20,7 @@ public:
 
 	// "Get" functions
 	sf::Vector2f getPos() { return position; }
-	sf::Vector2f getCameraPos() { return camPos; }
+	sf::Vector2f getCameraPos() { return camTarget; }
 
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
@@ -28,7 +28,12 @@ public:
 	// Movement
 	void checkDirection();
 
+	bool alive = true;
+
 private:
+	// Equations
+	float normalize(float value, float min, float max) { return (value - min) / (max - min); }
+	float pythagoras(int a, int b) { return sqrt((a * a) + (b * b)); }
 
 	// Body
 	sf::RectangleShape body;
@@ -37,14 +42,14 @@ private:
 
 	// Movement
 	void move();
-	void updateCam();
 
-	sf::Vector2f position;
+	sf::Vector2f position = { 100, 100 };;
 	Direction direction;
-	int speed = 10;
+	const int SPEED = 10;
 
 	// Camera info needed
-	sf::Vector2f camPos;
-	const int CAM_CHANGE = 50;
+	sf::Vector2f camTarget;
+	const int CAM_CHANGE = 100;
+	const int CAM_SPEED = 7;
 };
 

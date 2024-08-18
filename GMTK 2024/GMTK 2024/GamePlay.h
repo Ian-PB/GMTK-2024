@@ -4,7 +4,9 @@
 
 #include "Scenes.h"
 #include "Globals.h"
+
 #include "Player.h"
+#include "Mouse.h"
 
 
 class Game;
@@ -24,13 +26,19 @@ public:
 
 private:
 
+	void updateCamera();
+
+	
 	// Player Object
 	Player benjamin;
+	Mouse mouse;
 
 	sf::Vector2f mousePos;
 
 	// View
-	sf::View view;
+	sf::View camera;
+	sf::Vector2f camPos;
+	float camSpeed = 10;
 
 	// Sprites
 	sf::Sprite tilesSprite;
