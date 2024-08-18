@@ -11,12 +11,22 @@ Player::Player()
 	crosshair.setFillColor(sf::Color::Red);
 	crosshair.setRadius( 20 );
 	crosshair.setOrigin( 20, 20);
+
+
+	// Setup Shadow Shader
+	if (!shadow.loadFromFile("ASSETS\\SHADERS\\Shadow.vert", "ASSETS\\SHADERS\\Shadow.frag"))
+	{
+		std::cerr << "Error loading shadow Shader" << std::endl;
+	}
+	// Set texture uniform in shader
+	shadow.setUniform("u_texture", sf::Shader::CurrentTexture);
 }
 
 void Player::draw(sf::RenderWindow& t_window)
 {
 	if (alive)
 	{
+		t_window.draw(body, &shadow);
 		t_window.draw(body);
 
 		if (aiming)

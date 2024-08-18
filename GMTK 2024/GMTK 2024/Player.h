@@ -41,6 +41,8 @@ public:
 
 private:
 
+	// Shader
+	sf::Shader shadow;
 
 	// Body
 	sf::RectangleShape body;
