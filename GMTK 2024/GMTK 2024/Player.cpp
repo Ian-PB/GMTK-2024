@@ -7,6 +7,10 @@ Player::Player()
 	body.setSize({ (float)width, (float)height });
 	body.setOrigin(width / 2.0f, height / 2.0f);
 	body.setPosition(position);
+
+	crosshair.setFillColor(sf::Color::Red);
+	crosshair.setRadius( 20 );
+	crosshair.setOrigin( 20, 20);
 }
 
 void Player::draw(sf::RenderWindow& t_window)
@@ -14,7 +18,37 @@ void Player::draw(sf::RenderWindow& t_window)
 	if (alive)
 	{
 		t_window.draw(body);
+
+		if (aiming)
+		{
+			t_window.draw(crosshair);
+		}
 	}
+
+
+	// Mouse Draw
+	mouse.draw(t_window);
+}
+
+void Player::update(sf::Vector2f t_mousePos)
+{
+	// Movement
+	checkDirection();
+
+	// Throwing
+	// Check if the right mouse button is held down
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
+	{
+		aim(t_mousePos);
+	}
+	else
+	{
+		aiming = false;
+	}
+
+
+	// Mouse Updates
+	mouse.update(position);
 }
 
 void Player::move()
@@ -65,6 +99,15 @@ void Player::move()
 }
 
 
+
+void Player::aim(sf::Vector2f t_mousePos)
+{
+	aiming = true;
+
+	crosshair.setPosition(t_mousePos);
+}
+
+
 void Player::checkDirection()
 {
 	direction = Direction::None;
@@ -99,4 +142,11 @@ void Player::checkDirection()
 		direction = Direction::Right;
 		move();
 	}
+}
+
+void Player::throwMouse(sf::Vector2f t_target)
+{
+	mouse.target = t_target;
+
+	mouse.thrown = true;
 }

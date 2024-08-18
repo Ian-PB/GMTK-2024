@@ -134,7 +134,7 @@ void Game::update(sf::Time t_deltaTime)
 		break;
 
 	case Scene::GamePlay:
-		gameplay.update(t_deltaTime);
+		gameplay.update(t_deltaTime, m_window);
 		break;
 	}
 }

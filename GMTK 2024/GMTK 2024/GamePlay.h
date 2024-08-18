@@ -18,10 +18,11 @@ public:
 
 	void processEvents(sf::Event t_event);
 	void processMouseDown(sf::Event t_event);
-	void processMouseMove(sf::Event t_event);
+	void processMouseUp(sf::Event t_event);
+	void processMouseMove(sf::RenderWindow& t_window);
 
 
-	void update(sf::Time t_deltaTime);
+	void update(sf::Time t_deltaTime, sf::RenderWindow& t_window);
 	void render(sf::RenderWindow& t_window);
 
 private:
@@ -31,14 +32,13 @@ private:
 	
 	// Player Object
 	Player benjamin;
-	Mouse mouse;
 
 	sf::Vector2f mousePos;
 
 	// View
 	sf::View camera;
 	sf::Vector2f camPos;
-	float camSpeed = 10;
+	float camSpeed = 0;
 
 	// Sprites
 	sf::Sprite tilesSprite;

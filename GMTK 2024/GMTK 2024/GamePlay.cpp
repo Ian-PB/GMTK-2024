@@ -12,6 +12,7 @@ GamePlay::GamePlay()
 	tilesTexture.setRepeated(true);
 	tilesSprite.setTexture(tilesTexture);
 	tilesSprite.setTextureRect(sf::IntRect{ 0, 0, SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10 });
+	tilesSprite.setOrigin(SCREEN_WIDTH * 5, SCREEN_HEIGHT * 5);
 }
 
 void GamePlay::processEvents(sf::Event t_event)
@@ -21,29 +22,42 @@ void GamePlay::processEvents(sf::Event t_event)
 	{
 		processMouseDown(t_event);
 	}
-
-	if (sf::Event::MouseMoved == t_event.type)
+	if (sf::Event::MouseButtonReleased == t_event.type)
 	{
-		processMouseMove(t_event);
+		processMouseUp(t_event);
 	}
 }
 
 void GamePlay::processMouseDown(sf::Event t_event)
 {
-
 }
 
-void GamePlay::processMouseMove(sf::Event t_event)
+void GamePlay::processMouseUp(sf::Event t_event)
 {
-	mousePos.x = static_cast<float>(t_event.mouseMove.x);
-	mousePos.y = static_cast<float>(t_event.mouseMove.y);
+	if (benjamin.aiming)
+	{
+		benjamin.throwMouse(mousePos);
+	}
+}
+
+void GamePlay::processMouseMove(sf::RenderWindow& t_window)
+{
+	// Get the mouse position relative to the window
+	sf::Vector2i pixelPos = sf::Mouse::getPosition(t_window);
+
+	// Convert the pixel position to world coordinates
+	mousePos = t_window.mapPixelToCoords(pixelPos, camera);
 }
 
 
-void GamePlay::update(sf::Time t_deltaTime)
+void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 {
-	// Movement of the player
-	benjamin.checkDirection();
+	// Process the mouse moving even while ur not moving the mouse and just the scene
+	processMouseMove(t_window);
+
+
+	// Update the player
+	benjamin.update(mousePos);
 
 	updateCamera();
 }
@@ -58,9 +72,6 @@ void GamePlay::render(sf::RenderWindow& t_window)
 
 	// Draw player function called
 	benjamin.draw(t_window);
-
-	// Draw Mouse (The Destroyer)
-	mouse.draw(t_window);
 }
 
 void GamePlay::updateCamera()
@@ -76,8 +87,7 @@ void GamePlay::updateCamera()
 	heading.y = target.y - camPos.y;
 	lenght = sqrtf((heading.x * heading.x) + (heading.y * heading.y)); // find the distance
 
-	camSpeed = lenght / 5.0f;
-	std::cout << camSpeed << "\n";
+	camSpeed = lenght / 10.0f;
 
 	heading = heading / lenght;
 	heading = heading * camSpeed; // change speed to the actual speed

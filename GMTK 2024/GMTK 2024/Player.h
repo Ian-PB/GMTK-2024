@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Mouse.h"
+
 enum class Direction
 {
 	None,
@@ -24,16 +26,21 @@ public:
 
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
+	void update(sf::Vector2f t_mousePos);
 
 	// Movement
 	void checkDirection();
 
 	bool alive = true;
 
+	// Throwing Mouse
+	Mouse mouse;
+	void throwMouse(sf::Vector2f t_target);
+
+	bool aiming = false;
+
 private:
-	// Equations
-	float normalize(float value, float min, float max) { return (value - min) / (max - min); }
-	float pythagoras(int a, int b) { return sqrt((a * a) + (b * b)); }
+
 
 	// Body
 	sf::RectangleShape body;
@@ -45,11 +52,14 @@ private:
 
 	sf::Vector2f position = { 100, 100 };;
 	Direction direction;
-	const int SPEED = 10;
+	const int SPEED = 5;
 
 	// Camera info needed
 	sf::Vector2f camTarget;
 	const int CAM_CHANGE = 100;
-	const int CAM_SPEED = 7;
+
+	// Throwing Mouse
+	void aim(sf::Vector2f t_mousePos);
+	sf::CircleShape crosshair;
 };
 
