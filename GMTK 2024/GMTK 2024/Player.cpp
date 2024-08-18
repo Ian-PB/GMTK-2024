@@ -156,7 +156,6 @@ void Player::checkDirection()
 
 void Player::throwMouse(sf::Vector2f t_target)
 {
-	mouse.target = t_target;
-
-	mouse.thrown = true;
+	// Acitvate mouse thrown
+	mouse.throwSelf(position, t_target);
 }
