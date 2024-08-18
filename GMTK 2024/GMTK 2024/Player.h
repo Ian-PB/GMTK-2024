@@ -63,5 +63,8 @@ private:
 	// Throwing Mouse
 	void aim(sf::Vector2f t_mousePos);
 	sf::CircleShape crosshair;
+
+	// Mouse info while held
+	sf::Vector2f mouseHeldPos;
 };
 

@@ -20,6 +20,16 @@ void Mouse::draw(sf::RenderWindow& t_window)
 
 void Mouse::update(sf::Vector2f t_bearPos)
 {
+	// Update the position while held
+	positionWhileHeld = { t_bearPos.x - (50 / 2.0f), t_bearPos.y - (100 / 4.0f) };
+	// When returned
+	if (returned)
+	{
+		// Set position to held position
+		position = positionWhileHeld;
+		body.setPosition(position);
+	}
+
 	if (thrown)
 	{
 		throwMovement();
@@ -27,11 +37,11 @@ void Mouse::update(sf::Vector2f t_bearPos)
 	// if not thrown and not on benjamin...
 	else if (!thrown && !returned)
 	{
-		returnToBear(t_bearPos);
+		returnToBear();
 	}
 }
 
-void Mouse::returnToBear(sf::Vector2f t_bearPos)
+void Mouse::returnToBear()
 {
 	// Variables
 	float lenght = 0.0f;
@@ -39,8 +49,8 @@ void Mouse::returnToBear(sf::Vector2f t_bearPos)
 
 
 	// Move mouse to target
-	heading.x = t_bearPos.x - position.x;
-	heading.y = t_bearPos.y - position.y;
+	heading.x = positionWhileHeld.x - position.x;
+	heading.y = positionWhileHeld.y - position.y;
 	lenght = sqrtf((heading.x * heading.x) + (heading.y * heading.y)); // find the distance
 
 	if (lenght > throwSpeed)

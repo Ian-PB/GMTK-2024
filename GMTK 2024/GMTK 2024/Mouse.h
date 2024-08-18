@@ -4,6 +4,8 @@
 #include <iostream>
 
 
+
+
 class Mouse
 {
 public:
@@ -16,7 +18,7 @@ public:
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
 	void update(sf::Vector2f t_bearPos);
-	void returnToBear(sf::Vector2f t_position);
+	void returnToBear();
 
 	// Throwing
 	void throwSelf(sf::Vector2f t_initialPos, sf::Vector2f t_target);
@@ -38,6 +40,7 @@ private:
 	int height = 20;
 
 	sf::Vector2f position;
+	sf::Vector2f positionWhileHeld;
 
 	// Throwing
 	sf::Vector2f positionThrownFrom;

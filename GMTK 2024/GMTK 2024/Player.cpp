@@ -20,6 +20,10 @@ Player::Player()
 	}
 	// Set texture uniform in shader
 	shadow.setUniform("u_texture", sf::Shader::CurrentTexture);
+
+	// Setup mouse held position
+	mouseHeldPos = {position.x + (width / 2.0f), position.y + ((height / 4.0f) * 3) };
+
 }
 
 void Player::draw(sf::RenderWindow& t_window)
@@ -49,7 +53,10 @@ void Player::update(sf::Vector2f t_mousePos)
 	// Check if the right mouse button is held down
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
 	{
-		aim(t_mousePos);
+		if (mouse.returned)
+		{
+			aim(t_mousePos);
+		}
 	}
 	else
 	{
@@ -106,6 +113,7 @@ void Player::move()
 
 	position += movement;
 	body.setPosition(position); // change hitbox position
+	mouseHeldPos = { position.x + (width / 2.0f), position.y + ((height / 4.0f) * 3) }; // Update mouse held pos
 }
 
 
