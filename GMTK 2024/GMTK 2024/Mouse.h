@@ -23,7 +23,7 @@ public:
 	void throwMovement();
 	sf::Vector2f target;
 	bool thrown = false;
-	bool returned = true;
+	bool returned = false;
 
 	bool alive = true;
 
