@@ -66,6 +66,15 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 	// Update the player
 	benjamin.update(mousePos);
 
+	// Take hit
+	// for (int i = 0; i < enemyAmount; i++)
+	// {
+	//		if (enemies[i].checkCollision())
+	//		{
+	//			benjamin.takeDamage(enemies[i].damage);
+	//		}
+	// }
+
 	updateCamera();
 }
 
