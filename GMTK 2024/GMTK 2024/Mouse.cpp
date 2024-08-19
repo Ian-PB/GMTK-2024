@@ -10,7 +10,7 @@ Mouse::Mouse()
 	// Setup the under shadow
 	underShadow.setFillColor({0, 0, 0, 60});
 	underShadow.setRadius(width / 2.0f);
-	underShadow.setScale(1.5f, 1.0f);
+	underShadow.setScale(2.0f, 1.0f);
 	underShadow.setOrigin(width, width);
 
 	position = { 0, 0 };
@@ -43,6 +43,7 @@ void Mouse::update(sf::Vector2f t_bearPos)
 {
 	// Update the position while held
 	positionWhileHeld = { t_bearPos.x - (50 / 2.0f), t_bearPos.y - (100 / 4.0f) };
+
 	// When returned
 	if (returned)
 	{
@@ -145,7 +146,7 @@ void Mouse::throwMovement()
 
 	// Set the position of the body
 	body.setPosition(position);
-	underShadow.setPosition({ position.x + 20, position.y });
+	underShadow.setPosition(position);
 
 	framesPassedThrown++;
 	float secondsPassed = framesPassedThrown / 60.0f;

@@ -24,6 +24,9 @@ void main()
 
     // Apply the scaling transformation and Y-axis offset
     vec4 scaledPosition = originalPosition * vec4(scale, scale, scale, 1.0);
+    scaledPosition.x -= (20 * scale) / 2.0;
+    scaledPosition.y -= (20 * scale) / 2.0;
+
     scaledPosition.y += yOffset;
 
     // Transform the vertex position with the model-view-projection matrix
