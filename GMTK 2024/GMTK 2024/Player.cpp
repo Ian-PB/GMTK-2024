@@ -3,8 +3,16 @@
 Player::Player()
 {
 	// Setup body
-	body.setFillColor(sf::Color::Green);
-	body.setSize({ (float)width, (float)height });
+	// body.setFillColor(sf::Color::Green);
+	// body.setSize({ (float)width, (float)height });
+	if (!Texture.loadFromFile("ASSETS/IMAGES/bear.png"))
+	{
+		std::cout << "error with player image file";
+	}
+
+	body.setTexture(Texture);
+	// sprite.setScale(2, 2);
+	body.setTextureRect(sf::IntRect{ 0, 0, 32, 32 });
 	body.setOrigin(width / 2.0f, height / 2.0f);
 	body.setPosition(position);
 
