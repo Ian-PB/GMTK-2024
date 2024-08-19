@@ -45,6 +45,9 @@ public:
 	bool aiming = false;
 	bool canAttack = true;
 
+	void takeDamage(int t_damageAmount);
+	void invulnerable();
+
 private:
 
 
@@ -92,6 +95,12 @@ private:
 	int cooldownTimer = 0;
 	const int COOLDOWN_DURATION = 0.75 * 60;
 
+	// Player Health
+	const int MAX_HEALTH = 100;
+	int health = 0;
+	bool invinsable = false;
+	int invinsableTimer = 0;
+	const int INVINSABLE_DURATION = 3 * 60;
 
 
 

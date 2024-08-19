@@ -28,6 +28,10 @@ Player::Player()
 	// Setup mouse held position
 	mouseHeldPos = {position.x + (width / 2.0f), position.y + ((height / 4.0f) * 3) };
 
+
+	// Setup Health
+	health = MAX_HEALTH;
+
 }
 
 void Player::draw(sf::RenderWindow& t_window)
@@ -80,6 +84,12 @@ void Player::update(sf::Vector2f t_mousePos)
 	if (!canAttack)
 	{
 		attackCooldown();
+	}
+
+	// Invinsablility timer
+	if (invinsable)
+	{
+		invulnerable();
 	}
 
 	// Mouse Updates
@@ -215,6 +225,25 @@ void Player::throwMouse(sf::Vector2f t_target)
 {
 	// Acitvate mouse thrown
 	mouse.throwSelf(position, t_target);
+}
+
+void Player::takeDamage(int t_damageAmount)
+{
+	health -= t_damageAmount;
+
+	invinsable = true;
+}
+
+void Player::invulnerable()
+{
+	if (invinsableTimer < INVINSABLE_DURATION)
+	{
+		invinsableTimer++;
+	}
+	else
+	{
+		invinsable = false;
+	}
 }
 
 void Player::attackCooldown()
