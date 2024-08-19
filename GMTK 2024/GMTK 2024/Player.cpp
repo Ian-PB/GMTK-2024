@@ -229,7 +229,11 @@ void Player::throwMouse(sf::Vector2f t_target)
 
 void Player::takeDamage(int t_damageAmount)
 {
-	health -= t_damageAmount;
+	if (!invinsable)
+	{
+		health -= t_damageAmount;
+		body.setFillColor(INVINSABLE_COLOR);
+	}
 
 	invinsable = true;
 }
@@ -242,7 +246,10 @@ void Player::invulnerable()
 	}
 	else
 	{
+		invinsableTimer = 0;
 		invinsable = false;
+
+		body.setFillColor(sf::Color::Green);
 	}
 }
 

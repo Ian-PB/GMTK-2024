@@ -3,8 +3,12 @@
 
 GamePlay::GamePlay()
 {
-	camera.setSize(SCREEN_WIDTH / 1.0f, SCREEN_HEIGHT / 1.0f);
+	setupUI();
 
+	// Camera
+	camera.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	// Floor sprite
 	if (!tilesTexture.loadFromFile("ASSETS\\IMAGES\\tiles.jpg"))
 	{
 		std::cout << "problem loading sprite" << std::endl;
@@ -13,6 +17,13 @@ GamePlay::GamePlay()
 	tilesSprite.setTexture(tilesTexture);
 	tilesSprite.setTextureRect(sf::IntRect{ 0, 0, SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10 });
 	tilesSprite.setOrigin(SCREEN_WIDTH * 5, SCREEN_HEIGHT * 5);
+
+
+	// Enemies
+	for (int i = 0; i < 10; i++)
+	{
+		meleeEnemies[i].spawn();
+	}
 }
 
 void GamePlay::processEvents(sf::Event t_event)
@@ -56,6 +67,20 @@ void GamePlay::processMouseMove(sf::RenderWindow& t_window)
 	mousePos = t_window.mapPixelToCoords(pixelPos, camera);
 }
 
+void GamePlay::setupUI()
+{
+	// Font
+	if (!font.loadFromFile("ASSETS\\FONTS\\Daydream.ttf"))
+	{
+		std::cout << "problem loading font" << std::endl;
+	}
+	// Health UI
+	healthText.setFont(font);
+	healthText.setString(benjamin.getHealthString());
+	healthText.setStyle(sf::Text::Bold);
+	healthText.setCharacterSize(25U);
+}
+
 
 void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 {
@@ -67,13 +92,31 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 	benjamin.update(mousePos);
 
 	// Take hit
-	// for (int i = 0; i < enemyAmount; i++)
-	// {
-	//		if (enemies[i].checkCollision())
-	//		{
-	//			benjamin.takeDamage(enemies[i].damage);
-	//		}
-	// }
+	for (int i = 0; i < 10; i++)
+	{
+
+		// Check if hit the player
+		if (meleeEnemies[i].checkCollision(benjamin.getBody()))
+		{
+			benjamin.takeDamage(meleeEnemies[i].damage);
+			meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 150);
+			std::cout << meleeEnemies[i].knockbackTo.x << ", " << meleeEnemies[i].knockbackTo.y << " --- " << meleeEnemies[i].getPos().x << ", " << meleeEnemies[i].getPos().y << "\n";
+
+			healthText.setString(benjamin.getHealthString()); // Show damage taken
+		}
+
+		// Check if should be knocked back
+		if (meleeEnemies[i].knockback)
+		{
+			// If being knocked back then swap to this movement script
+			meleeEnemies[i].knockbackMovement();
+		}
+		else
+		{
+			// Move towards player
+			meleeEnemies[i].move(benjamin.getPos());
+		}
+	}
 
 	updateCamera();
 }
@@ -88,6 +131,13 @@ void GamePlay::render(sf::RenderWindow& t_window)
 
 	// Draw player function called
 	benjamin.draw(t_window);
+	t_window.draw(healthText);
+
+	// Enemies
+	for (int i = 0; i < 10; i++)
+	{
+		meleeEnemies[i].draw(t_window);
+	}
 }
 
 void GamePlay::updateCamera()
@@ -114,4 +164,24 @@ void GamePlay::updateCamera()
 
 	// Change the camera to be centered on the player
 	camera.setCenter(camPos);
+
+	// Set UI pos
+	healthText.setPosition({ camPos.x - (SCREEN_WIDTH / 2.0f), camPos.y - (SCREEN_HEIGHT / 2.0f)});
+}
+
+sf::Vector2f GamePlay::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_endPoint, sf::Vector2f t_vecBetweenPoints, int t_distance)
+{
+	float angle = atan2f(t_vecBetweenPoints.y, t_vecBetweenPoints.x);
+
+	// Calculate the total length of the line
+	float totalLength = vectorLenght(t_startPoint, t_endPoint);
+
+	// Calculate the ratio of the desired length to the total length of the line
+	float ratio = t_distance / totalLength;
+
+	// Calculate the coordinates of the point at the desired length along the line
+	float newX = t_startPoint.x + ratio * (t_endPoint.x - t_startPoint.x);
+	float newY = t_startPoint.y + ratio * (t_endPoint.y - t_startPoint.y);
+
+	return { newX, newY };
 }

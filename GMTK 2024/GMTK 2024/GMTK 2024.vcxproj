@@ -24,9 +24,11 @@
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MeleeEnemy.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pause.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RangeEnemy.cpp" />
     <ClCompile Include="Scenes.cpp" />
     <ClCompile Include="SplashScreen.cpp" />
   </ItemGroup>
@@ -36,9 +38,11 @@
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MeleeEnemy.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RangeEnemy.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="SplashScreen.h" />
   </ItemGroup>

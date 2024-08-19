@@ -1,5 +1,47 @@
 #pragma once
+
+#include <SFML/Graphics.hpp>
+#include <iostream>
+
+#include "Globals.h"
+#include "Player.h"
+
 class Enemy
 {
+public:
+	Enemy();
+
+	// "Get" functions
+	sf::Vector2f getPos() { return position; }
+
+	void draw(sf::RenderWindow &t_window);
+
+	void spawn();
+
+	virtual bool checkCollision(sf::RectangleShape t_playerBody);
+
+	bool alive = false;
+
+protected:
+
+	// Sprite
+	sf::Sprite sprite;
+	sf::Texture texture;
+
+	// Hitbox
+	sf::RectangleShape hitbox;
+	int width = 0;
+	int height = 0;
+
+	sf::Vector2f position = { 0.0f, 0.0f };
+	int speed = 0;
+
+	// Health
+	int maxHealth;
+	int health = maxHealth;
+
+private:
+
+
 };
 

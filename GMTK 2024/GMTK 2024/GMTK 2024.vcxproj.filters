@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{ee8bb407-b9e1-43f0-8761-2013b1598511}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Enemys">
+      <UniqueIdentifier>{8fef62cb-497f-4e91-a148-5b1162d185f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Enemys">
+      <UniqueIdentifier>{04d12a64-1619-4d95-b54a-f560f8ea9624}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,8 +60,14 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RangeEnemy.cpp">
+      <Filter>Source Files\Enemys</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeEnemy.cpp">
+      <Filter>Source Files\Enemys</Filter>
+    </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Enemys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,8 +98,14 @@
     <ClInclude Include="Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RangeEnemy.h">
+      <Filter>Header Files\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeEnemy.h">
+      <Filter>Header Files\Enemys</Filter>
+    </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Enemys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

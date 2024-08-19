@@ -24,6 +24,8 @@ public:
 	// "Get" functions
 	sf::Vector2f getPos() { return position; }
 	sf::Vector2f getCameraPos() { return camTarget; }
+	sf::RectangleShape getBody() { return body; }
+	std::string getHealthString() { return (std::to_string(health) + " / " + std::to_string(MAX_HEALTH)); }
 
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
@@ -58,6 +60,10 @@ private:
 	sf::RectangleShape body;
 	int width = 50;
 	int height = 100;
+
+	// Sprite
+	sf::Sprite Sprite;
+	sf::Texture Texture;
 
 	// Movement
 	void move();
@@ -96,6 +102,7 @@ private:
 	const int COOLDOWN_DURATION = 0.75 * 60;
 
 	// Player Health
+	const sf::Color INVINSABLE_COLOR = {0, 255, 0, 50};
 	const int MAX_HEALTH = 100;
 	int health = 0;
 	bool invinsable = false;
@@ -109,6 +116,7 @@ private:
 	sf::Vector2f vectorBetweenAB(sf::Vector2f t_a, sf::Vector2f t_b) { return (t_b - t_a); }
 	float angleBetweenAB(sf::Vector2f t_a, sf::Vector2f t_b) { return atan2(t_b.y - t_a.y, t_b.x - t_a.x) * (180 / PI); }
 	float vectorLenght(sf::Vector2f t_a, sf::Vector2f t_b) { return (sqrt((t_b.x - t_a.x) * (t_b.x - t_a.x) + (t_b.y - t_a.y) * (t_b.y - t_a.y))); }
+
 	sf::Vector2f scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_endPoint, sf::Vector2f t_vecBetweenPoints, int t_distance);
 };
 
