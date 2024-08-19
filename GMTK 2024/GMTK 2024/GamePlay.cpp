@@ -74,6 +74,7 @@ void GamePlay::setupUI()
 	{
 		std::cout << "problem loading font" << std::endl;
 	}
+
 	// Health UI
 	healthText.setFont(font);
 	healthText.setString(benjamin.getHealthString());
@@ -94,27 +95,34 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 	// Take hit
 	for (int i = 0; i < 10; i++)
 	{
-
-		// Check if hit the player
-		if (meleeEnemies[i].checkCollision(benjamin.getBody()))
+		if (meleeEnemies[i].alive)
 		{
-			benjamin.takeDamage(meleeEnemies[i].damage);
-			meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 150);
-			std::cout << meleeEnemies[i].knockbackTo.x << ", " << meleeEnemies[i].knockbackTo.y << " --- " << meleeEnemies[i].getPos().x << ", " << meleeEnemies[i].getPos().y << "\n";
+			// Check if hit the player
+			if (meleeEnemies[i].checkCollision(benjamin.getBody()))
+			{
+				meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 100);
+				benjamin.takeDamage(meleeEnemies[i].damage);
 
-			healthText.setString(benjamin.getHealthString()); // Show damage taken
-		}
+				healthText.setString(benjamin.getHealthString()); // Show damage taken
+			}
 
-		// Check if should be knocked back
-		if (meleeEnemies[i].knockback)
-		{
-			// If being knocked back then swap to this movement script
-			meleeEnemies[i].knockbackMovement();
-		}
-		else
-		{
-			// Move towards player
-			meleeEnemies[i].move(benjamin.getPos());
+			// Check if should be knocked back
+			if (meleeEnemies[i].knockback)
+			{
+				// If being knocked back then swap to this movement script
+				meleeEnemies[i].knockbackMovement();
+			}
+			else
+			{
+				// Move towards player
+				meleeEnemies[i].move(benjamin.getPos());
+			}
+
+			if (benjamin.hitboxActive)
+			{
+				meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 200);
+				meleeEnemies[i].checkCollisionsOnAttacks(benjamin.getHitbox(), benjamin.getDamage());
+			}
 		}
 	}
 

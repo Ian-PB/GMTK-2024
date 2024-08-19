@@ -25,6 +25,8 @@ public:
 	sf::Vector2f getPos() { return position; }
 	sf::Vector2f getCameraPos() { return camTarget; }
 	sf::RectangleShape getBody() { return body; }
+	sf::RectangleShape getHitbox() { return hitbox; }
+	int getDamage() { return damage; }
 	std::string getHealthString() { return (std::to_string(health) + " / " + std::to_string(MAX_HEALTH)); }
 
 	// Draw all relevent features
@@ -46,6 +48,7 @@ public:
 
 	bool aiming = false;
 	bool canAttack = true;
+	bool hitboxActive = false;
 
 	void takeDamage(int t_damageAmount);
 	void invulnerable();
@@ -62,13 +65,13 @@ private:
 	int height = 100;
 
 	// Sprite
-	sf::Sprite Sprite;
-	sf::Texture Texture;
+	sf::Sprite sprite;
+	sf::Texture texture;
 
 	// Movement
 	void move();
 
-	sf::Vector2f position = { 100, 100 };;
+	sf::Vector2f position = { 100, 100 };
 	Direction direction;
 	const int SPEED = 5;
 
@@ -91,7 +94,7 @@ private:
 	int hitboxHeight = 30;
 	float hitboxRotation = 0.0f;
 
-	bool hitboxActive = false;
+	
 	int damage = 2;
 	int attackTimer = 0;
 	const int ATTACK_DURATION = 20;

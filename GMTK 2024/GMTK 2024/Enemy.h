@@ -20,6 +20,11 @@ public:
 
 	virtual bool checkCollision(sf::RectangleShape t_playerBody);
 
+	void takeDamage(int t_damage);
+	void knockbackMovement();
+	bool knockback = false;
+	sf::Vector2f knockbackTo;
+
 	bool alive = false;
 
 protected:
@@ -35,13 +40,14 @@ protected:
 
 	sf::Vector2f position = { 0.0f, 0.0f };
 	int speed = 0;
+	int originalSpeed = 0;
+	int knockbackSpeed = 0;
 
 	// Health
 	int maxHealth;
 	int health = maxHealth;
 
 private:
-
 
 };
 

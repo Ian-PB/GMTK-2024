@@ -5,6 +5,8 @@ MeleeEnemy::MeleeEnemy()
 	// setup Health
 	maxHealth = 100;
 	// Speed
+	originalSpeed = 4;
+	knockbackSpeed = originalSpeed * 2;
 	speed = originalSpeed;
 
 	// Dimensions
@@ -47,8 +49,7 @@ bool MeleeEnemy::checkCollision(sf::RectangleShape t_playerBody)
 {
 	if (t_playerBody.getGlobalBounds().intersects(hitbox.getGlobalBounds()))
 	{
-		knockback = true;
-		speed = knockbackSpeed;
+		takeDamage(0);
 
 		return true;
 	}
@@ -56,40 +57,10 @@ bool MeleeEnemy::checkCollision(sf::RectangleShape t_playerBody)
 	return false;
 }
 
-void MeleeEnemy::knockbackMovement()
+void MeleeEnemy::checkCollisionsOnAttacks(sf::RectangleShape t_attack, int t_damage)
 {
-	// Variables
-	sf::Vector2f heading = { 0.0f, 0.0f };
-	float length = 0.0f;
-
-	// Move mouse to target
-	heading.x = knockbackTo.x - position.x;
-	heading.y = knockbackTo.y - position.y;
-	length = sqrtf((heading.x * heading.x) + (heading.y * heading.y)); // find the distance
-
-	if (length > speed)
+	if (t_attack.getGlobalBounds().intersects(hitbox.getGlobalBounds()))
 	{
-		// Normalize the heading vector
-		heading = heading / length;
-
-		// Apply a smooth deceleration as the object approaches the target
-		float smoothingFactor = std::min(length / 100.0f, 1.0f); // Adjust 100.0f to control the smoothing effect
-		float adjustedSpeed = speed * smoothingFactor;
-
-		// Calculate the final heading based on the adjusted speed
-		heading = heading * adjustedSpeed;
-
-		// Update the position
-		position += heading;
+		takeDamage(t_damage);
 	}
-	else
-	{
-		// Reset the speed and stop knockback when the target is reached
-		speed = originalSpeed;
-		knockback = false;
-	}
-
-	// Set the position of the body
-	hitbox.setPosition(position);
-
 }
