@@ -41,13 +41,19 @@ void Enemy::takeDamage(int t_damage)
 	knockback = true;
 	speed = knockbackSpeed;
 
-	health -= t_damage;
-
-	if (health <= 0)
+	if (canTakeDmg && t_damage > 0)
 	{
-		alive = false;
+		health -= t_damage;
+
+		canTakeDmg = false;
+
+		if (health <= 0)
+		{
+			alive = false;
+		}
+
+		std::cout << health << "\n";
 	}
-	std::cout << health << "\n";
 }
 
 void Enemy::knockbackMovement()
@@ -85,4 +91,17 @@ void Enemy::knockbackMovement()
 
 	// Set the position of the body
 	hitbox.setPosition(position);
+}
+
+void Enemy::invulnerable()
+{
+	if (invinsableTimer < INVINSABLE_DURATION)
+	{
+		invinsableTimer++;
+	}
+	else
+	{
+		invinsableTimer = 0;
+		canTakeDmg = true;
+	}
 }

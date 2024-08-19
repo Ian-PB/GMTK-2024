@@ -27,6 +27,9 @@ public:
 
 	bool alive = false;
 
+	void invulnerable();
+	bool canTakeDmg = true;
+
 protected:
 
 	// Sprite
@@ -46,6 +49,8 @@ protected:
 	// Health
 	int maxHealth;
 	int health = maxHealth;
+	int invinsableTimer = 0;
+	const int INVINSABLE_DURATION = 0.5 * 60;
 
 private:
 
