@@ -8,7 +8,7 @@ Mouse::Mouse()
 	body.setOrigin(width / 2.0f, height / 2.0f);
 
 	// Setup the under shadow
-	underShadow.setFillColor({0, 0, 0, 100});
+	underShadow.setFillColor({0, 0, 0, 60});
 	underShadow.setRadius(width / 2.0f);
 	underShadow.setScale(1.5f, 1.0f);
 	underShadow.setOrigin(width, width);
@@ -21,6 +21,7 @@ Mouse::Mouse()
 		std::cerr << "Error loading thrown Shader" << std::endl;
 	}
 }
+
 
 void Mouse::draw(sf::RenderWindow& t_window)
 {
