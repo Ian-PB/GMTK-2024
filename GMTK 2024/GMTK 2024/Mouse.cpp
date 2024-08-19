@@ -7,14 +7,34 @@ Mouse::Mouse()
 	body.setSize({ (float)width, (float)height });
 	body.setOrigin(width / 2.0f, height / 2.0f);
 
+	// Setup the under shadow
+	underShadow.setFillColor({0, 0, 0, 100});
+	underShadow.setRadius(width / 2.0f);
+	underShadow.setScale(1.5f, 1.0f);
+	underShadow.setOrigin(width, width);
+
 	position = { 0, 0 };
+
+	// Throw shader setup
+	if (!thrownShader.loadFromFile("ASSETS\\SHADERS\\Thrown.vert", sf::Shader::Vertex))
+	{
+		std::cerr << "Error loading thrown Shader" << std::endl;
+	}
 }
 
 void Mouse::draw(sf::RenderWindow& t_window)
 {
 	if (alive)
 	{
-		t_window.draw(body);
+		if (thrown)
+		{
+			t_window.draw(underShadow);
+			t_window.draw(body, &thrownShader);
+		}
+		else
+		{
+			t_window.draw(body);
+		}
 	}
 }
 
@@ -84,6 +104,13 @@ void Mouse::throwSelf(sf::Vector2f t_initialPos, sf::Vector2f t_target)
 	// Set the target position
 	target = t_target;
 
+	// Shader info
+	thrownShader.setUniform("speed", throwSpeed);
+
+	float throwLenght = sqrt(((positionThrownFrom.x - target.x) * (positionThrownFrom.x - target.x)) + ((positionThrownFrom.y - target.y) * (positionThrownFrom.y - target.y)));
+	thrownShader.setUniform("fullDistance", throwLenght);
+	std::cout << throwLenght << "\n";
+
 	std::cout << "THROW \n";
 }
 
@@ -91,39 +118,35 @@ void Mouse::throwMovement()
 {
 	// Variables
 	sf::Vector2f heading = { 0.0f, 0.0f };
-	float progress = 0.0f;
+	float lenght = 0.0f;
 
 
 	// Move mouse to target
 	heading.x = target.x - position.x;
 	heading.y = target.y - position.y;
-	float length = sqrtf((heading.x * heading.x) + (heading.y * heading.y)); // find the distance
+	lenght = sqrtf((heading.x * heading.x) + (heading.y * heading.y)); // find the distance
 
-	if (length > throwSpeed)
+	if (lenght > throwSpeed)
 	{
-		heading = heading / length;
+		heading = heading / lenght;
 		heading = heading * throwSpeed; // change speed to the actual speed
 
-		// Calculate the arc using a sine function
-		float progress = (target.x - position.x) / (target.x - positionThrownFrom.x);
-		heading.y += sinf(progress * 3.14f) * arcHeight; // Adjust arcHeight to control how high the arc goes
 
-		// Update Position
+		// Update Pos
 		position += heading;
-
-
-		// Scale the body based on progress
-		scale = 1.0f + (progress * 2.3f) * sinf(progress * 3.14f); // Scale from 1.0 to 5.0 and back to 1.0
-		body.setScale(scale, scale);
-
-		// Set the position of the body
-		body.setPosition(position);
 	}
 	else
 	{
 		thrown = false;
-
-		scale = 1.0f;
-		body.setScale(scale, scale);
+		framesPassedThrown = 0;
 	}
+
+
+	// Set the position of the body
+	body.setPosition(position);
+	underShadow.setPosition({ position.x + 20, position.y });
+
+	framesPassedThrown++;
+	float secondsPassed = framesPassedThrown / 60.0f;
+	thrownShader.setUniform("time", secondsPassed);
 }

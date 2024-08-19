@@ -1,7 +1,5 @@
 #version 120  // Replace with the appropriate version for your needs
 
-uniform float u_time;        // Time variable for animation
-uniform vec2 u_mousePos;     // Mouse Position
 
 void main()
 {

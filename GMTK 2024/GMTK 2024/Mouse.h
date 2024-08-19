@@ -43,9 +43,12 @@ private:
 	sf::Vector2f positionWhileHeld;
 
 	// Throwing
+	sf::CircleShape underShadow;
+	sf::Shader thrownShader;
 	sf::Vector2f positionThrownFrom;
-	float throwSpeed = 14.0f;
-	float arcHeight = -10.0f;
+	float throwSpeed = 12.5f;
+	// Time keeping for shader
+	int framesPassedThrown = 0;
 
 	// Returning
 	float returnSpeed = 6.5f;
