@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Mouse.h"
+#include "Globals.h"
 
 enum class Direction
 {
@@ -31,6 +32,10 @@ public:
 	// Movement
 	void checkDirection();
 
+	// Attacking
+	void attack(sf::Vector2f t_mousePos);
+	bool attacking = false;
+
 	bool alive = true;
 
 	// Throwing Mouse
@@ -38,8 +43,10 @@ public:
 	void throwMouse(sf::Vector2f t_target);
 
 	bool aiming = false;
+	bool canAttack = true;
 
 private:
+
 
 	// Shader
 	sf::Shader shadow;
@@ -66,5 +73,33 @@ private:
 
 	// Mouse info while held
 	sf::Vector2f mouseHeldPos;
+
+
+	// Melee
+	sf::RectangleShape hitbox;
+	sf::Vector2f hitboxPos;
+	int hitboxWidth = 75;
+	int hitboxHeight = 30;
+	float hitboxRotation = 0.0f;
+
+	bool hitboxActive = false;
+	int damage = 2;
+	int attackTimer = 0;
+	const int ATTACK_DURATION = 20;
+
+	// Attack cooldown info
+	void attackCooldown();
+	int cooldownTimer = 0;
+	const int COOLDOWN_DURATION = 0.75 * 60;
+
+
+
+
+
+	// Equations
+	sf::Vector2f vectorBetweenAB(sf::Vector2f t_a, sf::Vector2f t_b) { return (t_b - t_a); }
+	float angleBetweenAB(sf::Vector2f t_a, sf::Vector2f t_b) { return atan2(t_b.y - t_a.y, t_b.x - t_a.x) * (180 / PI); }
+	float vectorLenght(sf::Vector2f t_a, sf::Vector2f t_b) { return (sqrt((t_b.x - t_a.x) * (t_b.x - t_a.x) + (t_b.y - t_a.y) * (t_b.y - t_a.y))); }
+	sf::Vector2f scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_endPoint, sf::Vector2f t_vecBetweenPoints, int t_distance);
 };
 

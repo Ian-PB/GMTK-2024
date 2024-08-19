@@ -8,6 +8,10 @@ Player::Player()
 	body.setOrigin(width / 2.0f, height / 2.0f);
 	body.setPosition(position);
 
+	hitbox.setFillColor(sf::Color::Red);
+	hitbox.setSize({ (float)hitboxWidth, (float)hitboxHeight });
+	hitbox.setOrigin(hitboxWidth / 2.0f, hitboxHeight / 2.0f);
+
 	crosshair.setFillColor(sf::Color::Red);
 	crosshair.setRadius( 20 );
 	crosshair.setOrigin( 20, 20);
@@ -39,6 +43,11 @@ void Player::draw(sf::RenderWindow& t_window)
 		}
 	}
 
+	if (hitboxActive)
+	{
+		t_window.draw(hitbox);
+	}
+
 
 	// Mouse Draw
 	mouse.draw(t_window);
@@ -63,6 +72,15 @@ void Player::update(sf::Vector2f t_mousePos)
 		aiming = false;
 	}
 
+	if (attacking)
+	{
+		attack(t_mousePos);
+	}
+
+	if (!canAttack)
+	{
+		attackCooldown();
+	}
 
 	// Mouse Updates
 	mouse.update(position);
@@ -162,8 +180,69 @@ void Player::checkDirection()
 	}
 }
 
+void Player::attack(sf::Vector2f t_mousePos)
+{
+	hitboxActive = true;
+	canAttack = false;
+
+	if (attackTimer < ATTACK_DURATION)
+	{
+		attackTimer++;
+
+		if (attackTimer == 1)
+		{
+			sf::Vector2f attackPos = vectorBetweenAB(position, t_mousePos);
+
+			attackPos = scaleVectorLenght(position, t_mousePos, attackPos, 75);
+
+			hitboxPos = attackPos;
+			hitboxRotation = angleBetweenAB(position, t_mousePos);
+
+
+			hitbox.setRotation(hitboxRotation + 90);
+			hitbox.setPosition(attackPos);
+		}
+	}
+	else
+	{
+		attackTimer = 0;
+		hitboxActive = false;
+		attacking = false;
+	}
+}
+
 void Player::throwMouse(sf::Vector2f t_target)
 {
 	// Acitvate mouse thrown
 	mouse.throwSelf(position, t_target);
+}
+
+void Player::attackCooldown()
+{
+	if (cooldownTimer < COOLDOWN_DURATION + ATTACK_DURATION)
+	{
+		cooldownTimer++;
+	}
+	else
+	{
+		cooldownTimer = 0;
+		canAttack = true;
+	}
+}
+
+sf::Vector2f Player::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_endPoint, sf::Vector2f t_vecBetweenPoints, int t_distance)
+{
+	float angle = atan2f(t_vecBetweenPoints.y, t_vecBetweenPoints.x);
+
+	// Calculate the total length of the line
+	float totalLength = vectorLenght(t_startPoint, t_endPoint);
+
+	// Calculate the ratio of the desired length to the total length of the line
+	float ratio = t_distance / totalLength;
+
+	// Calculate the coordinates of the point at the desired length along the line
+	float newX = t_startPoint.x + ratio * (t_endPoint.x - t_startPoint.x);
+	float newY = t_startPoint.y + ratio * (t_endPoint.y - t_startPoint.y);
+
+	return { newX, newY };
 }

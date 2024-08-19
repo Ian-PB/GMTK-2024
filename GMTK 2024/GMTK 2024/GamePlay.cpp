@@ -30,6 +30,13 @@ void GamePlay::processEvents(sf::Event t_event)
 
 void GamePlay::processMouseDown(sf::Event t_event)
 {
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		if (benjamin.canAttack)
+		{
+			benjamin.attacking = true;
+		}
+	}
 }
 
 void GamePlay::processMouseUp(sf::Event t_event)
