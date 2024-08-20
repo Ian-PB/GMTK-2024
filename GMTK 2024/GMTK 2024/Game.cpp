@@ -76,7 +76,7 @@ void Game::processEvents()
 			break;
 
 		case Scene::MainMenu:
-			mainMenu.processEvents(newEvent);
+			mainMenu.processEvents(newEvent, m_window);
 			break;
 
 		case Scene::Pause:

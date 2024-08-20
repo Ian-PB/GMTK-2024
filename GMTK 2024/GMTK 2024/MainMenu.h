@@ -15,8 +15,8 @@ class MainMenu
 public:
 	MainMenu();
 
-	void processEvents(sf::Event t_event);
-	void processMouseDown(sf::Event t_event);
+	void processEvents(sf::Event t_event, sf::RenderWindow &t_window);
+	void processMouseDown(sf::Event t_event, sf::RenderWindow& t_window);
 	void processMouseMove(sf::Event t_event);
 
 
@@ -26,14 +26,21 @@ public:
 private:
 
 	sf::Vector2f mousePos;
+
+	sf::Texture tilesTexture;
+	sf::Sprite tilesSprite;
 	
 	// Buttons
 	void setupButtons();
 
 	sf::Font font;
 	sf::Text gameplayText;
+	sf::Text exitText;
 
 	Button gameplayButton;
 	bool gameplayColliding = false;
+
+	Button exitGameButton;
+	bool exitGameButtonColliding = false;
 
 };
