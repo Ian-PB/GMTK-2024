@@ -70,8 +70,15 @@ void Mouse::update(sf::Vector2f t_bearPos)
 		{
 			throwMovement();
 		}
+
+		if (canAttack)
+		{
+			Landed();
+		}
+
+
 		// if not thrown and not on benjamin...
-		else if (!thrown && !returned)
+		else if (!thrown && !returned && !canAttack)
 		{
 			returnToBear();
 		}
@@ -151,6 +158,7 @@ void Mouse::throwMovement()
 	else
 	{
 		thrown = false;
+		canAttack = true;
 		framesPassedThrown = 0;
 	}
 
@@ -163,4 +171,17 @@ void Mouse::throwMovement()
 	framesPassedThrown++;
 	float secondsPassed = framesPassedThrown / 60.0f;
 	thrownShader.setUniform("time", secondsPassed);
+}
+
+void Mouse::Landed()
+{
+	if (landTimer < LAND_DURATION)
+	{
+		landTimer++;
+	}
+	else
+	{
+		landTimer = 0;
+		canAttack = false;
+	}
 }

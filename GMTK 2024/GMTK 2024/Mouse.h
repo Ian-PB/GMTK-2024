@@ -27,6 +27,12 @@ public:
 	bool thrown = false;
 	bool returned = false;
 
+	void Landed();
+	int landTimer = 0;
+	const int LAND_DURATION = 0.5 * 60;
+	bool canAttack = false;
+
+
 	bool active = true;
 
 

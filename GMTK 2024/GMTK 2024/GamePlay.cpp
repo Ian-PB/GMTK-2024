@@ -114,7 +114,10 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 			}
 
 			// Check for mouse
-			meleeEnemies[i].checkForMouse(benjamin.mouse.getBody());
+			if (benjamin.mouse.canAttack && benjamin.mouse.active)
+			{
+				meleeEnemies[i].checkForMouse(benjamin.mouse.getBody());
+			}
 
 			// Check if should be knocked back
 			if (meleeEnemies[i].knockback)
