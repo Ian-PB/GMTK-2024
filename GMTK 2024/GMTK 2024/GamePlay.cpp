@@ -9,7 +9,7 @@ GamePlay::GamePlay()
 	camera.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// Floor sprite
-	if (!tilesTexture.loadFromFile("ASSETS\\IMAGES\\tiles.jpg"))
+	if (!tilesTexture.loadFromFile("ASSETS\\IMAGES\\grass.png"))
 	{
 		std::cout << "problem loading sprite" << std::endl;
 	}

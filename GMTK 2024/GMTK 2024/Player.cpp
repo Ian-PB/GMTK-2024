@@ -3,15 +3,18 @@
 Player::Player()
 {
 	// Setup body
-	// body.setFillColor(sf::Color::Green);
-	// body.setSize({ (float)width, (float)height });
+	body.setFillColor(sf::Color::Green);
+	body.setSize({ (float)width, (float)height });
 	if (!texture.loadFromFile("ASSETS/IMAGES/bear.png"))
 	{
 		std::cout << "error with player image file";
 	}
 
 	sprite.setTexture(texture);
-	// sprite.setScale(2, 2);
+	sprite.setTextureRect(sf::IntRect{ 0, 128, 32, 32});
+	sprite.setScale(4, 4);
+	sprite.setOrigin(16, 16);
+	sprite.setPosition(position);
 
 	body.setTextureRect(sf::IntRect{ 0, 0, 32, 32 });
 	body.setOrigin(width / 2.0f, height / 2.0f);
@@ -47,8 +50,9 @@ void Player::draw(sf::RenderWindow& t_window)
 {
 	if (alive)
 	{
-		t_window.draw(body, &shadow);
-		t_window.draw(body);
+		t_window.draw(sprite, &shadow);
+		t_window.draw(sprite);
+		// t_window.draw(body);
 
 		if (aiming)
 		{
@@ -70,6 +74,9 @@ void Player::update(sf::Vector2f t_mousePos)
 {
 	// Movement
 	checkDirection();
+
+	// Animation
+	animate();
 
 	// Throwing
 	// Check if the right mouse button is held down
@@ -149,6 +156,7 @@ void Player::move()
 
 
 	position += movement;
+	sprite.setPosition(position); // change hitbox position
 	body.setPosition(position); // change hitbox position
 	mouseHeldPos = { position.x + (width / 2.0f), position.y + ((height / 4.0f) * 3) }; // Update mouse held pos
 }
@@ -241,7 +249,7 @@ void Player::takeDamage(int t_damageAmount)
 	if (!invinsable)
 	{
 		health -= t_damageAmount;
-		body.setFillColor(INVINSABLE_COLOR);
+		sprite.setColor(INVINSABLE_COLOR);
 	}
 
 	invinsable = true;
@@ -258,7 +266,7 @@ void Player::invulnerable()
 		invinsableTimer = 0;
 		invinsable = false;
 
-		body.setFillColor(sf::Color::Green);
+		sprite.setColor(VINSABLE_COLOR);
 	}
 }
 
@@ -290,4 +298,53 @@ sf::Vector2f Player::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t
 	float newY = t_startPoint.y + ratio * (t_endPoint.y - t_startPoint.y);
 
 	return { newX, newY };
+}
+
+void Player::animate()
+{
+	// std::cout << "I AM ANIMATING!!!!!" << std::endl;
+
+	acounter++;
+	if (acounter > 5)
+	{
+		acounter = 0;
+		ax++;
+	}
+	else
+	{
+		if (ax > 8)
+		{
+			ax = 1;
+		}
+	}
+
+	switch (direction)
+	{
+	case Direction::None:
+		ay = 0;
+		break;
+	case Direction::Down:
+		ay = 1;
+		break;
+	case Direction::Up:
+		ay = 2;
+		break;
+	case Direction::Left:
+		ay = 3;
+		break;
+	case Direction::Right:
+		ay = 4;
+		break;
+	}
+
+	if (ay > 0)
+	{
+		sprite.setTextureRect(sf::IntRect{ ((ax - 1) * 32), ((ay - 1) * 32), 32, 32 });
+	}
+	else
+	{
+		sprite.setTextureRect(sf::IntRect{ 0, 128, 32, 32 });
+	}
+
+
 }
