@@ -18,6 +18,8 @@ GamePlay::GamePlay()
 	tilesSprite.setTextureRect(sf::IntRect{ 0, 0, SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10 });
 	tilesSprite.setOrigin(SCREEN_WIDTH * 5, SCREEN_HEIGHT * 5);
 
+	// Random Seed
+	srand(time(nullptr));
 
 	// Enemies
 	for (int i = 0; i < 10; i++)
@@ -128,6 +130,10 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 				meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 200);
 				meleeEnemies[i].checkCollisionsOnAttacks(benjamin.getHitbox(), benjamin.getDamage());
 			}
+		}
+		else
+		{
+			meleeEnemies[i].respawn(benjamin.getPos());
 		}
 	}
 

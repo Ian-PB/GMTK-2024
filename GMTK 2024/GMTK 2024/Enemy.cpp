@@ -26,6 +26,28 @@ void Enemy::spawn()
 	health = maxHealth;
 }
 
+void Enemy::respawn(sf::Vector2f t_playerPos)
+{
+	sf::Vector2f newPos;
+
+	// Make new spawnPoint
+	float randAngleD = rand() % 180;
+	if (rand() % 2 == 0)
+	{
+		randAngleD *= -1;
+	}
+
+	newPos = calculateVectorAtDistance(t_playerPos, randAngleD, 300);
+
+
+	// Reset position
+	position = newPos;
+	hitbox.setPosition(position);
+
+	// Reset Health
+	health = maxHealth;
+}
+
 bool Enemy::checkCollision(sf::RectangleShape t_playerBody)
 {
 	if (t_playerBody.getGlobalBounds().intersects(hitbox.getGlobalBounds()))
@@ -104,4 +126,36 @@ void Enemy::invulnerable()
 		invinsableTimer = 0;
 		canTakeDmg = true;
 	}
+}
+
+sf::Vector2f Enemy::calculateVectorAtDistance(sf::Vector2f origin, float angleDegrees, float distance)
+{
+	// Convert the angle from degrees to radians (trigonometric functions in C++ use radians)
+	float angleRadians = angleDegrees * (3.14159265f / 180.0f);
+
+	// Calculate the X and Y offsets using trigonometry
+	float offsetX = distance * cos(angleRadians);
+	float offsetY = distance * sin(angleRadians);
+
+	// Create the new vector at the specified distance and angle
+	sf::Vector2f result = origin + sf::Vector2f(offsetX, offsetY);
+
+	return result;
+}
+
+sf::Vector2f Enemy::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_endPoint, sf::Vector2f t_vecBetweenPoints, int t_distance)
+{
+	float angle = atan2f(t_vecBetweenPoints.y, t_vecBetweenPoints.x);
+
+	// Calculate the total length of the line
+	float totalLength = vectorLenght(t_startPoint, t_endPoint);
+
+	// Calculate the ratio of the desired length to the total length of the line
+	float ratio = t_distance / totalLength;
+
+	// Calculate the coordinates of the point at the desired length along the line
+	float newX = t_startPoint.x + ratio * (t_endPoint.x - t_startPoint.x);
+	float newY = t_startPoint.y + ratio * (t_endPoint.y - t_startPoint.y);
+
+	return { newX, newY };
 }
