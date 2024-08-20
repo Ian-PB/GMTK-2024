@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Scene SceneClass::currentMode = Scene::GamePlay;
+Scene SceneClass::currentMode = Scene::MainMenu;
 /// <summary>
 /// default constructor
 /// setup the window properties
@@ -13,7 +13,6 @@ Game::Game() :
 	m_window{ sf::VideoMode{ SCREEN_WIDTH, SCREEN_HEIGHT, 32U }, "SFML Game" },
 	m_exitGame{ false } //when true game will exit
 {
-	setupFontAndText(); // load font 
 }
 
 /// <summary>
@@ -170,15 +169,4 @@ void Game::render()
 	}
 
 	m_window.display();
-}
-
-/// <summary>
-/// load the font and setup the text message for screen
-/// </summary>
-void Game::setupFontAndText()
-{
-	if (!m_ArialBlackfont.loadFromFile("ASSETS\\FONTS\\ariblk.ttf"))
-	{
-		std::cout << "problem loading arial black font" << std::endl;
-	}
 }

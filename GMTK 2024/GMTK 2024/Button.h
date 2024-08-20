@@ -7,7 +7,6 @@ class Button
 {
 public:
 
-	Button();
 
 	sf::RectangleShape getBody() { return body; }
 

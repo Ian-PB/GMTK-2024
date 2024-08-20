@@ -38,7 +38,6 @@ private:
 	void update(sf::Time t_deltaTime);
 	void render();
 
-	void setupFontAndText();
 
 	bool m_exitGame; // control exiting game
 

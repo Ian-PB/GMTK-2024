@@ -1,8 +1,11 @@
 #pragma once
 
 # include <SFML/Graphics.hpp>
+# include <iostream>
 
 #include "Scenes.h"
+#include "Globals.h"
+#include "Button.h"
 
 
 class Game;
@@ -24,5 +27,13 @@ private:
 
 	sf::Vector2f mousePos;
 	
+	// Buttons
+	void setupButtons();
+
+	sf::Font font;
+	sf::Text gameplayText;
+
+	Button gameplayButton;
+	bool gameplayColliding = false;
 
 };
