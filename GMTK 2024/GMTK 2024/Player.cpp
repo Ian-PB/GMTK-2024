@@ -312,7 +312,7 @@ void Player::animate()
 	}
 	else
 	{
-		if (ax > 8)
+		if (ax >= 8)
 		{
 			ax = 1;
 		}
