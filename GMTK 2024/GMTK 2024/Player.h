@@ -69,6 +69,8 @@ private:
 	// Sprite
 	sf::Sprite sprite;
 	sf::Texture texture;
+	sf::Texture crosshairTexture;
+	sf::Texture attackTexture;
 	int acounter = 0;
 	int ax = 1;
 	int ay = 5;
@@ -86,7 +88,7 @@ private:
 
 	// Throwing Mouse
 	void aim(sf::Vector2f t_mousePos);
-	sf::CircleShape crosshair;
+	sf::Sprite crosshair;
 
 	// Mouse info while held
 	sf::Vector2f mouseHeldPos;
@@ -95,14 +97,16 @@ private:
 	// Melee
 	sf::RectangleShape hitbox;
 	sf::Vector2f hitboxPos;
-	int hitboxWidth = 75;
-	int hitboxHeight = 30;
+	int hitboxWidth = 100;
+	int hitboxHeight = 44;
 	float hitboxRotation = 0.0f;
-
+	sf::Sprite hitboxSprite;
 	
+	int aFrameCount = 0;
+	int attackFrame = 1;
 	int damage = 2;
 	int attackTimer = 0;
-	const int ATTACK_DURATION = 20;
+	const int ATTACK_DURATION = 30;
 
 	// Attack cooldown info
 	void attackCooldown();
