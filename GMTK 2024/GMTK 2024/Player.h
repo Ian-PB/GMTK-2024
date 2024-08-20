@@ -53,6 +53,8 @@ public:
 	void takeDamage(int t_damageAmount);
 	void invulnerable();
 
+	void animate();
+
 private:
 
 
@@ -67,6 +69,9 @@ private:
 	// Sprite
 	sf::Sprite sprite;
 	sf::Texture texture;
+	int acounter = 0;
+	int ax = 1;
+	int ay = 5;
 
 	// Movement
 	void move();
@@ -105,7 +110,8 @@ private:
 	const int COOLDOWN_DURATION = 0.75 * 60;
 
 	// Player Health
-	const sf::Color INVINSABLE_COLOR = {0, 255, 0, 50};
+	const sf::Color INVINSABLE_COLOR = {255, 255, 255, 100};
+	const sf::Color VINSABLE_COLOR = { 255, 255, 255, 255 };
 	const int MAX_HEALTH = 100;
 	int health = 0;
 	bool invinsable = false;

@@ -13,6 +13,7 @@ public:
 
 	// "Get" functions
 	sf::Vector2f getPos() { return position; }
+	sf::RectangleShape getBody() { return body; }
 
 
 	// Draw all relevent features
@@ -27,7 +28,7 @@ public:
 	bool thrown = false;
 	bool returned = false;
 
-	bool alive = true;
+	bool active = true;
 
 
 private:

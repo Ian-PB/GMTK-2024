@@ -37,7 +37,7 @@ void Enemy::respawn(sf::Vector2f t_playerPos)
 		randAngleD *= -1;
 	}
 
-	newPos = calculateVectorAtDistance(t_playerPos, randAngleD, 300);
+	newPos = calculateVectorAtDistance(t_playerPos, randAngleD, SCREEN_HEIGHT);
 
 
 	// Reset position
@@ -46,6 +46,20 @@ void Enemy::respawn(sf::Vector2f t_playerPos)
 
 	// Reset Health
 	health = maxHealth;
+	alive = true;
+}
+
+void Enemy::respawnTimer(sf::Vector2f t_playerPos)
+{
+	if (deathTimer < DEATH_DURATION)
+	{
+		deathTimer++;
+	}
+	else
+	{
+		deathTimer = 0;
+		respawn(t_playerPos);
+	}
 }
 
 bool Enemy::checkCollision(sf::RectangleShape t_playerBody)
@@ -72,6 +86,20 @@ void Enemy::takeDamage(int t_damage)
 		if (health <= 0)
 		{
 			alive = false;
+		}
+	}
+}
+
+void Enemy::takeDamage(int t_damage, bool t_knockback)
+{
+	if (canTakeDmg && t_damage > 0)
+	{
+		health -= t_damage;
+
+		if (health <= 0)
+		{
+			alive = false;
+			grabbed = false;
 		}
 
 		std::cout << health << "\n";
@@ -158,4 +186,34 @@ sf::Vector2f Enemy::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_
 	float newY = t_startPoint.y + ratio * (t_endPoint.y - t_startPoint.y);
 
 	return { newX, newY };
+}
+
+void Enemy::checkForMouse(sf::RectangleShape t_mouseBody)
+{
+	if (t_mouseBody.getGlobalBounds().intersects(hitbox.getGlobalBounds()))
+	{
+		grabbed = true;
+	}
+}
+
+void Enemy::grabLogic(bool &t_mouseActive)
+{
+	t_mouseActive = false;
+
+	if (grabTimer < 5)
+	{
+		grabTimer++;
+	}
+	else
+	{
+		takeDamage(2, false);
+	}
+
+	if (!alive)
+	{
+		t_mouseActive = true;
+	}
+
+	// Swap texture
+
 }

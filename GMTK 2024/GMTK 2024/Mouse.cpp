@@ -25,7 +25,7 @@ Mouse::Mouse()
 
 void Mouse::draw(sf::RenderWindow& t_window)
 {
-	if (alive)
+	if (active)
 	{
 		if (thrown)
 		{
@@ -41,25 +41,28 @@ void Mouse::draw(sf::RenderWindow& t_window)
 
 void Mouse::update(sf::Vector2f t_bearPos)
 {
-	// Update the position while held
-	positionWhileHeld = { t_bearPos.x - (50 / 2.0f), t_bearPos.y - (100 / 4.0f) };
+	if (active)
+	{
+		// Update the position while held
+		positionWhileHeld = { t_bearPos.x - (50 / 2.0f), t_bearPos.y - (100 / 4.0f) };
 
-	// When returned
-	if (returned)
-	{
-		// Set position to held position
-		position = positionWhileHeld;
-		body.setPosition(position);
-	}
+		// When returned
+		if (returned)
+		{
+			// Set position to held position
+			position = positionWhileHeld;
+			body.setPosition(position);
+		}
 
-	if (thrown)
-	{
-		throwMovement();
-	}
-	// if not thrown and not on benjamin...
-	else if (!thrown && !returned)
-	{
-		returnToBear();
+		if (thrown)
+		{
+			throwMovement();
+		}
+		// if not thrown and not on benjamin...
+		else if (!thrown && !returned)
+		{
+			returnToBear();
+		}
 	}
 }
 

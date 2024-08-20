@@ -9,7 +9,7 @@ GamePlay::GamePlay()
 	camera.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// Floor sprite
-	if (!tilesTexture.loadFromFile("ASSETS\\IMAGES\\tiles.jpg"))
+	if (!tilesTexture.loadFromFile("ASSETS\\IMAGES\\grass.png"))
 	{
 		std::cout << "problem loading sprite" << std::endl;
 	}
@@ -113,11 +113,18 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 				healthText.setString(benjamin.getHealthString()); // Show damage taken
 			}
 
+			// Check for mouse
+			meleeEnemies[i].checkForMouse(benjamin.mouse.getBody());
+
 			// Check if should be knocked back
 			if (meleeEnemies[i].knockback)
 			{
 				// If being knocked back then swap to this movement script
 				meleeEnemies[i].knockbackMovement();
+			}
+			else if (meleeEnemies[i].grabbed)
+			{
+				meleeEnemies[i].grabLogic(benjamin.mouse.active);
 			}
 			else
 			{
@@ -133,7 +140,7 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 		}
 		else
 		{
-			meleeEnemies[i].respawn(benjamin.getPos());
+			meleeEnemies[i].respawnTimer(benjamin.getPos());
 		}
 	}
 
