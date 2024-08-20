@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "Player.h"
 
+
 class Enemy
 {
 public:
@@ -42,11 +43,13 @@ public:
 	bool grabbed = false;
 	int grabTimer = 0;
 
+
 protected:
 
 	// Sprite
 	sf::Sprite sprite;
 	sf::Texture texture;
+	bool movingLeft = true;
 
 	// Hitbox
 	sf::RectangleShape hitbox;
