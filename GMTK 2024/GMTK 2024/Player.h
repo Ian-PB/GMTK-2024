@@ -28,6 +28,7 @@ public:
 	sf::RectangleShape getHitbox() { return hitbox; }
 	int getDamage() { return damage; }
 	std::string getHealthString() { return (std::to_string(health) + " / " + std::to_string(MAX_HEALTH)); }
+	int getHealth() { return health; }
 
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
@@ -54,6 +55,8 @@ public:
 	void invulnerable();
 
 	void animate();
+
+	void reset();
 
 private:
 

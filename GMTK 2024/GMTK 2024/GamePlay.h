@@ -60,4 +60,14 @@ private:
 	float angleBetweenAB(sf::Vector2f t_a, sf::Vector2f t_b) { return atan2(t_b.y - t_a.y, t_b.x - t_a.x) * (180 / PI); }
 	float vectorLenght(sf::Vector2f t_a, sf::Vector2f t_b) { return (sqrt((t_b.x - t_a.x) * (t_b.x - t_a.x) + (t_b.y - t_a.y) * (t_b.y - t_a.y))); }
 	sf::Vector2f scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_endPoint, sf::Vector2f t_vecBetweenPoints, int t_distance);
+
+	// Game over
+	void reset();
+	void gameOver();
+	bool gameOverBool = false;
+	int gameOverTimer = 0;
+	const int RETURN_TIME = 60 * 5;
+
+	sf::RectangleShape gameOverScreen;
+	sf::Text gameOverText;
 };

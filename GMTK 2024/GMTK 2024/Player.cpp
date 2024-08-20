@@ -403,3 +403,12 @@ void Player::animate()
 		sprite.setTextureRect(sf::IntRect{ 0, 128, 32, 32 });
 	}
 }
+
+void Player::reset()
+{
+	health = MAX_HEALTH;
+
+	position = { SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f };
+	body.setPosition(position);
+	sprite.setPosition(position);
+}
