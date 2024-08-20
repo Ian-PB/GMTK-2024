@@ -217,5 +217,5 @@ void Enemy::grabLogic(bool &t_mouseActive)
 	}
 
 	// Swap texture
-
+	
 }

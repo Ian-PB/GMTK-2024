@@ -7,6 +7,10 @@ MeleeEnemy::MeleeEnemy()
 	{
 		std::cout << "error with enemy image file";
 	}
+	if (!cloudTexture.loadFromFile("ASSETS/IMAGES/cloud.png"))
+	{
+		std::cout << "error with cloud image file";
+	}
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect{ 0, 32, 16, 16 });
 
@@ -77,24 +81,45 @@ void MeleeEnemy::move(sf::Vector2f t_target)
 
 void MeleeEnemy::animate()
 {
-	for (int i = 0; i < 8; i++)
+	if (!grabbed)
 	{
-		if (frameTimer < FRAME_CHANGE)
+		sprite.setTexture(texture);
+		for (int i = 0; i < 8; i++)
 		{
-			frameTimer++;
-		}
-		else
-		{
-			if (movingLeft)
+			if (frameTimer < FRAME_CHANGE)
 			{
-				sprite.setTextureRect(sf::IntRect{ 16 * i, 32, 16, 16 });
+				frameTimer++;
 			}
 			else
 			{
-				sprite.setTextureRect(sf::IntRect{ 16 * i, 48, 16, 16 });
-			}
+				if (movingLeft)
+				{
+					sprite.setTextureRect(sf::IntRect{ 16 * i, 32, 16, 16 });
+				}
+				else
+				{
+					sprite.setTextureRect(sf::IntRect{ 16 * i, 48, 16, 16 });
+				}
 
-			frameTimer = 0;
+				frameTimer = 0;
+			}
+		}
+	}
+
+	if (grabbed)
+	{
+		sprite.setTexture(cloudTexture);
+		for (int i = 0; i < 4; i++)
+		{
+			if (frameTimer < FRAME_CHANGE)
+			{
+				frameTimer++;
+			}
+			else
+			{
+				sprite.setTextureRect(sf::IntRect{ 16 * i, 0, 16, 16 });
+				frameTimer = 0;
+			}
 		}
 	}
 }

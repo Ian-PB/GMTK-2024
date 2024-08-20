@@ -240,6 +240,6 @@ void Mouse::animate(int t_direction)
 	}
 	else
 	{
-		std::cout << "mouse image missing" << std::endl;
+		// std::cout << "mouse image missing" << std::endl;
 	}
 }
