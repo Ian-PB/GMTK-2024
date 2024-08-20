@@ -123,7 +123,26 @@ void Player::update(sf::Vector2f t_mousePos)
 	}
 
 	// Mouse Updates
-	mouse.update(position);
+	switch (direction)
+	{
+	case Direction::None:
+		mouse.update(position, 0);
+		break;
+	case Direction::Down:
+		mouse.update(position, 0);
+		break;
+	case Direction::Up:
+		mouse.update(position, 1);
+		break;
+	case Direction::Left:
+		mouse.update(position, 2);
+		break;
+	case Direction::Right:
+		mouse.update(position, 3);
+		break;
+	}
+
+
 }
 
 void Player::move()

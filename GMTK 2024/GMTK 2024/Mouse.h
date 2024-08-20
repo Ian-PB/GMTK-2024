@@ -17,8 +17,9 @@ public:
 
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
-	void update(sf::Vector2f t_bearPos);
+	void update(sf::Vector2f t_bearPos, int t_direction);
 	void returnToBear();
+	void animate(int t_direction);
 
 	// Throwing
 	void throwSelf(sf::Vector2f t_initialPos, sf::Vector2f t_target);
@@ -31,7 +32,12 @@ public:
 	int landTimer = 0;
 	const int LAND_DURATION = 0.5 * 60;
 	bool canAttack = false;
+	bool movingLeft = true;
 
+	int acounter = 0;
+	int ax = 1;
+	int ay = 0;
+	int raisecounter = 0;
 
 	bool active = true;
 

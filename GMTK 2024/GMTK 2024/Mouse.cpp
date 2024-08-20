@@ -50,8 +50,11 @@ void Mouse::draw(sf::RenderWindow& t_window)
 	}
 }
 
-void Mouse::update(sf::Vector2f t_bearPos)
+void Mouse::update(sf::Vector2f t_bearPos, int t_direction)
 {
+	// animate!!
+	animate(t_direction);
+
 	if (active)
 	{
 		// Update the position while held
@@ -90,7 +93,7 @@ void Mouse::returnToBear()
 	// Variables
 	float lenght = 0.0f;
 	sf::Vector2f heading(0.0f, 0.0f);
-
+	sf::Vector2f lastPos = position;
 
 	// Move mouse to target
 	heading.x = positionWhileHeld.x - position.x;
@@ -105,12 +108,22 @@ void Mouse::returnToBear()
 
 		// Update Pos
 		position += heading;
+
+		// Check if moving left or right
+		if (position.x > lastPos.x)
+		{
+			movingLeft = false;
+		}
+		else if (position.x < lastPos.x)
+		{
+			movingLeft = true;
+		}
+		sf::Vector2f lastPos = position;
 	}
 	else
 	{
 		returned = true;
 	}
-
 
 	// Set the position of the body
 	body.setPosition(position);
@@ -183,5 +196,51 @@ void Mouse::Landed()
 	{
 		landTimer = 0;
 		canAttack = false;
+	}
+}
+
+void Mouse::animate(int t_direction)
+{
+	ay = t_direction;
+	// std::cout << ay << std::endl;
+
+	acounter++;
+	if (acounter > 3)
+	{
+		acounter = 0;
+		ax++;
+	}
+	else
+	{
+		if (ax >= 3)
+		{
+			ax = 1;
+		}
+	}
+
+	if (returned) // && ay <= 4)
+	{
+		// sprite.setTextureRect(sf::IntRect{ ((ax - 1) * 32), ((ay - 1) * 32), 32, 32 });
+		sprite.setTextureRect(sf::IntRect{ 0, (ay * 32), 32, 32 });
+	}
+	else if (thrown && !canAttack) // ay == 5)
+	{
+		sprite.setTextureRect(sf::IntRect{ (ax * 16), 160, 16, 16 });
+	}
+	else if (!movingLeft && !thrown && !returned && !canAttack)
+	{
+		sprite.setTextureRect(sf::IntRect{ (ax * 16), 144, 16, 16 });
+	}
+	else if (movingLeft && !thrown && !returned && !canAttack) // ay == 7)
+	{
+		sprite.setTextureRect(sf::IntRect{ (ax * 16), 128, 16, 16 });
+	}
+	else if (!thrown && !returned && canAttack)
+	{
+		sprite.setTextureRect(sf::IntRect{ 0, 128, 16, 16 });
+	}
+	else
+	{
+		std::cout << "mouse image missing" << std::endl;
 	}
 }
