@@ -21,6 +21,7 @@ public:
 	virtual bool checkCollision(sf::RectangleShape t_playerBody);
 
 	void takeDamage(int t_damage);
+	void takeDamage(int t_damage, bool t_knockback);
 	void knockbackMovement();
 	bool knockback = false;
 	sf::Vector2f knockbackTo;
@@ -29,6 +30,12 @@ public:
 
 	void invulnerable();
 	bool canTakeDmg = true;
+
+	// Mouse grab
+	void checkForMouse(sf::RectangleShape t_mouseBody);
+	void grabLogic(bool& t_mouseActive);
+	bool grabbed = false;
+	int grabTimer = 0;
 
 protected:
 

@@ -26,6 +26,7 @@ void Enemy::spawn()
 	health = maxHealth;
 }
 
+
 bool Enemy::checkCollision(sf::RectangleShape t_playerBody)
 {
 	if (t_playerBody.getGlobalBounds().intersects(hitbox.getGlobalBounds()))
@@ -50,6 +51,20 @@ void Enemy::takeDamage(int t_damage)
 		if (health <= 0)
 		{
 			alive = false;
+		}
+	}
+}
+
+void Enemy::takeDamage(int t_damage, bool t_knockback)
+{
+	if (canTakeDmg && t_damage > 0)
+	{
+		health -= t_damage;
+
+		if (health <= 0)
+		{
+			alive = false;
+			grabbed = false;
 		}
 
 		std::cout << health << "\n";
@@ -104,4 +119,33 @@ void Enemy::invulnerable()
 		invinsableTimer = 0;
 		canTakeDmg = true;
 	}
+}
+
+void Enemy::checkForMouse(sf::RectangleShape t_mouseBody)
+{
+	if (t_mouseBody.getGlobalBounds().intersects(hitbox.getGlobalBounds()))
+	{
+		grabbed = true;
+	}
+}
+
+void Enemy::grabLogic(bool &t_mouseActive)
+{
+	t_mouseActive = false;
+
+	if (grabTimer < 5)
+	{
+		grabTimer++;
+	}
+	else
+	{
+		takeDamage(2, false);
+	}
+
+	if (!alive)
+	{
+		t_mouseActive = true;
+	}
+
+	// Swap texture
 }
