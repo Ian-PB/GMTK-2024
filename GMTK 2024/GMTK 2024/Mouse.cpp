@@ -87,8 +87,6 @@ void Mouse::returnToBear()
 	else
 	{
 		returned = true;
-
-		std::cout << "RETURNED \n";
 	}
 
 
@@ -111,9 +109,6 @@ void Mouse::throwSelf(sf::Vector2f t_initialPos, sf::Vector2f t_target)
 
 	float throwLenght = sqrt(((positionThrownFrom.x - target.x) * (positionThrownFrom.x - target.x)) + ((positionThrownFrom.y - target.y) * (positionThrownFrom.y - target.y)));
 	thrownShader.setUniform("fullDistance", throwLenght);
-	std::cout << throwLenght << "\n";
-
-	std::cout << "THROW \n";
 }
 
 void Mouse::throwMovement()

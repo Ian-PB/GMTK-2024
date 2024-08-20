@@ -100,7 +100,7 @@ private:
 	float hitboxRotation = 0.0f;
 
 	
-	int damage = 2;
+	int damage = 20;
 	int attackTimer = 0;
 	const int ATTACK_DURATION = 20;
 

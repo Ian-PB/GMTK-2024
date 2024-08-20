@@ -97,6 +97,11 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 	{
 		if (meleeEnemies[i].alive)
 		{
+			if (!meleeEnemies[i].canTakeDmg)
+			{
+				meleeEnemies[i].invulnerable();
+			}
+
 			// Check if hit the player
 			if (meleeEnemies[i].checkCollision(benjamin.getBody()))
 			{
