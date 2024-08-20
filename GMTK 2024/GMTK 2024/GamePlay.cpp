@@ -77,6 +77,12 @@ void GamePlay::setupUI()
 		std::cout << "problem loading font" << std::endl;
 	}
 
+	// Audio
+	if (!music.openFromFile("ASSETS/AUDIO/music.mp3"))
+	{
+		std::cout << "error with music";
+	}
+
 	// Health UI
 	healthText.setFont(font);
 	healthText.setString(benjamin.getHealthString());
@@ -92,12 +98,14 @@ void GamePlay::setupUI()
 	gameOverText.setString("GAME OVER");
 	gameOverText.setStyle(sf::Text::Bold);
 	gameOverText.setCharacterSize(80U);
+
+	music.play();
 }
 
 
 void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 {
-	if (benjamin.getHealth() <= 90)
+	if (benjamin.getHealth() <= 0)
 	{
 		gameOverBool = true;
 	}
