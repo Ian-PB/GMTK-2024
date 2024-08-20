@@ -24,7 +24,7 @@ GamePlay::GamePlay()
 	// Enemies
 	for (int i = 0; i < 10; i++)
 	{
-		meleeEnemies[i].spawn();
+		meleeEnemies[i].respawn(benjamin.getPos());
 	}
 }
 
@@ -82,75 +82,100 @@ void GamePlay::setupUI()
 	healthText.setString(benjamin.getHealthString());
 	healthText.setStyle(sf::Text::Bold);
 	healthText.setCharacterSize(25U);
+
+
+	gameOverScreen.setFillColor({200, 200, 200, 100});
+	gameOverScreen.setOrigin({ (SCREEN_WIDTH - 200) / 2, (SCREEN_HEIGHT - 100) / 2 });
+	gameOverScreen.setSize({ SCREEN_WIDTH - 200, SCREEN_HEIGHT - 100 });
+
+	gameOverText.setFont(font);
+	gameOverText.setString("GAME OVER");
+	gameOverText.setStyle(sf::Text::Bold);
+	gameOverText.setCharacterSize(80U);
 }
 
 
 void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 {
-	// Process the mouse moving even while ur not moving the mouse and just the scene
-	processMouseMove(t_window);
-
-
-	// Update the player
-	benjamin.update(mousePos);
-
-	// Take hit
-	for (int i = 0; i < 10; i++)
+	if (benjamin.getHealth() <= 90)
 	{
-		if (meleeEnemies[i].alive)
+		gameOverBool = true;
+	}
+
+
+	if (!gameOverBool)
+	{
+		// Process the mouse moving even while ur not moving the mouse and just the scene
+		processMouseMove(t_window);
+
+
+		// Update the player
+		benjamin.update(mousePos);
+
+		// Take hit
+		for (int i = 0; i < 10; i++)
 		{
-			meleeEnemies[i].animate();
-
-
-			if (!meleeEnemies[i].canTakeDmg)
+			if (meleeEnemies[i].alive)
 			{
-				meleeEnemies[i].invulnerable();
-			}
+				meleeEnemies[i].animate();
 
-			// Check if hit the player
-			if (meleeEnemies[i].checkCollision(benjamin.getBody()))
-			{
-				meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 100);
-				benjamin.takeDamage(meleeEnemies[i].damage);
 
-				healthText.setString(benjamin.getHealthString()); // Show damage taken
-			}
+				if (!meleeEnemies[i].canTakeDmg)
+				{
+					meleeEnemies[i].invulnerable();
+				}
 
-			// Check for mouse
-			if (benjamin.mouse.thrown && benjamin.mouse.active)
-			{
-				meleeEnemies[i].checkForMouse(benjamin.mouse.getBody());
-			}
+				// Check if hit the player
+				if (meleeEnemies[i].checkCollision(benjamin.getBody()))
+				{
+					meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 100);
+					benjamin.takeDamage(meleeEnemies[i].damage);
 
-			// Check if should be knocked back
-			if (meleeEnemies[i].knockback)
-			{
-				// If being knocked back then swap to this movement script
-				meleeEnemies[i].knockbackMovement();
-			}
-			else if (meleeEnemies[i].grabbed)
-			{
-				meleeEnemies[i].grabLogic(benjamin.mouse.active);
+					healthText.setString(benjamin.getHealthString()); // Show damage taken
+				}
+
+				// Check for mouse
+				if (benjamin.mouse.thrown && benjamin.mouse.active)
+				{
+					meleeEnemies[i].checkForMouse(benjamin.mouse.getBody());
+				}
+
+				// Check if should be knocked back
+				if (meleeEnemies[i].knockback)
+				{
+					// If being knocked back then swap to this movement script
+					meleeEnemies[i].knockbackMovement();
+				}
+				else if (meleeEnemies[i].grabbed)
+				{
+					meleeEnemies[i].grabLogic(benjamin.mouse.active);
+				}
+				else
+				{
+					// Move towards player
+					meleeEnemies[i].move(benjamin.getPos());
+				}
+
+				if (benjamin.hitboxActive)
+				{
+					meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 200);
+					meleeEnemies[i].checkCollisionsOnAttacks(benjamin.getHitbox(), benjamin.getDamage());
+				}
 			}
 			else
 			{
-				// Move towards player
-				meleeEnemies[i].move(benjamin.getPos());
+				meleeEnemies[i].respawnTimer(benjamin.getPos());
 			}
+		}
 
-			if (benjamin.hitboxActive)
-			{
-				meleeEnemies[i].knockbackTo = scaleVectorLenght(benjamin.getPos(), meleeEnemies[i].getPos(), vectorBetweenAB(benjamin.getPos(), meleeEnemies[i].getPos()), 200);
-				meleeEnemies[i].checkCollisionsOnAttacks(benjamin.getHitbox(), benjamin.getDamage());
-			}
-		}
-		else
-		{
-			meleeEnemies[i].respawnTimer(benjamin.getPos());
-		}
+		updateCamera();
 	}
 
-	updateCamera();
+	// Game Over
+	else
+	{
+		gameOver();
+	}
 }
 
 void GamePlay::render(sf::RenderWindow& t_window)
@@ -169,6 +194,12 @@ void GamePlay::render(sf::RenderWindow& t_window)
 	for (int i = 0; i < 10; i++)
 	{
 		meleeEnemies[i].draw(t_window);
+	}
+
+	if (gameOverBool)
+	{
+		t_window.draw(gameOverScreen);
+		t_window.draw(gameOverText);
 	}
 }
 
@@ -199,6 +230,9 @@ void GamePlay::updateCamera()
 
 	// Set UI pos
 	healthText.setPosition({ camPos.x - (SCREEN_WIDTH / 2.0f), camPos.y - (SCREEN_HEIGHT / 2.0f)});
+
+	gameOverScreen.setPosition(camPos);
+	gameOverText.setPosition({ camPos.x - 375, camPos.y - 75});
 }
 
 sf::Vector2f GamePlay::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t_endPoint, sf::Vector2f t_vecBetweenPoints, int t_distance)
@@ -216,4 +250,32 @@ sf::Vector2f GamePlay::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f
 	float newY = t_startPoint.y + ratio * (t_endPoint.y - t_startPoint.y);
 
 	return { newX, newY };
+}
+
+void GamePlay::reset()
+{
+	benjamin.reset();
+
+	for (int i = 0; i < 10; i++)
+	{
+		meleeEnemies[i].respawn(benjamin.getPos());
+	}
+}
+
+void GamePlay::gameOver()
+{
+	if (gameOverTimer < RETURN_TIME)
+	{
+		gameOverTimer++;
+	}
+	else
+	{
+		gameOverTimer = 0;
+
+		reset();
+		gameOverBool = false;
+
+		// End by exiting scene
+		SceneClass::currentMode = Scene::MainMenu;
+	}
 }

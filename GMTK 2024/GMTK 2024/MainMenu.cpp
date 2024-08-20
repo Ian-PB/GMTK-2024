@@ -3,6 +3,9 @@
 
 MainMenu::MainMenu()
 {
+	camera.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	camera.setCenter({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 });
+
 	setupButtons();
 
 	// Floor sprite
@@ -56,6 +59,8 @@ void MainMenu::update(sf::Time t_deltaTime)
 
 void MainMenu::render(sf::RenderWindow& t_window)
 {
+	t_window.setView(camera);
+
 	t_window.draw(tilesSprite);
 
 	t_window.draw(gameplayButton.getBody());

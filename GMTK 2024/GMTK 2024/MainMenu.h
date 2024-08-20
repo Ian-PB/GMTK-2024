@@ -24,6 +24,7 @@ public:
 	void render(sf::RenderWindow& t_window);
 
 private:
+	sf::View camera;
 
 	sf::Vector2f mousePos;
 
