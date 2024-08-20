@@ -15,7 +15,6 @@ public:
 	sf::Vector2f getPos() { return position; }
 	sf::RectangleShape getBody() { return body; }
 
-
 	// Draw all relevent features
 	void draw(sf::RenderWindow& t_window);
 	void update(sf::Vector2f t_bearPos);
@@ -33,9 +32,10 @@ public:
 
 private:
 
-
 	// Body
 	sf::RectangleShape body;
+	sf::Sprite sprite;
+	sf::Texture texture;
 	float scale = 1.0f;
 	int width = 20;
 	int height = 20;

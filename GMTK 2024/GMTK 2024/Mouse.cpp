@@ -2,6 +2,15 @@
 
 Mouse::Mouse()
 {
+	if (!texture.loadFromFile("ASSETS/IMAGES/mouse.png"))
+	{
+		std::cout << "error with mouse image file";
+	}
+	sprite.setTexture(texture);
+	sprite.setTextureRect(sf::IntRect{ 0, 0, 16, 16 });
+	sprite.setScale(4, 4);
+	sprite.setOrigin(8, 8);
+
 	// Setup body
 	body.setFillColor(sf::Color::Blue);
 	body.setSize({ (float)width, (float)height });
@@ -29,12 +38,14 @@ void Mouse::draw(sf::RenderWindow& t_window)
 	{
 		if (thrown)
 		{
+			t_window.draw(body);
 			t_window.draw(underShadow);
-			t_window.draw(body, &thrownShader);
+			t_window.draw(sprite, &thrownShader);
 		}
 		else
 		{
 			t_window.draw(body);
+			t_window.draw(sprite);
 		}
 	}
 }
@@ -52,6 +63,7 @@ void Mouse::update(sf::Vector2f t_bearPos)
 			// Set position to held position
 			position = positionWhileHeld;
 			body.setPosition(position);
+			sprite.setPosition(position);
 		}
 
 		if (thrown)
@@ -95,6 +107,7 @@ void Mouse::returnToBear()
 
 	// Set the position of the body
 	body.setPosition(position);
+	sprite.setPosition(position);
 }
 
 void Mouse::throwSelf(sf::Vector2f t_initialPos, sf::Vector2f t_target)
@@ -144,6 +157,7 @@ void Mouse::throwMovement()
 
 	// Set the position of the body
 	body.setPosition(position);
+	sprite.setPosition(position);
 	underShadow.setPosition(position);
 
 	framesPassedThrown++;
