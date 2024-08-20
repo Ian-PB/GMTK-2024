@@ -16,7 +16,7 @@ void main()
     float scale = 1.0 + sin(normalizedTime * 3.14159) * 1.0; // Smooth growth and shrink with a single sinusoidal wave
 
     // Y-offset for the arc effect
-    float arcHeight = -75.0; // Adjust as needed for the height of the arc
+    float arcHeight = -10.0; // Adjust as needed for the height of the arc
     float yOffset = sin(normalizedTime * 3.14159) * arcHeight; // Single sinusoidal arc
 
     // Original vertex position
@@ -24,10 +24,10 @@ void main()
 
     // Apply the scaling transformation and Y-axis offset
     vec4 scaledPosition = originalPosition * vec4(scale, scale, scale, 1.0);
-    scaledPosition.x -= (20 * scale) / 2.0;
-    scaledPosition.y -= (20 * scale) / 2.0;
+    ///scaledPosition.x -= (20 * scale) / 2.0;
+    ///scaledPosition.y -= (20 * scale) / 2.0;
 
-    scaledPosition.y += yOffset;
+    //scaledPosition.y += yOffset;
 
     // Transform the vertex position with the model-view-projection matrix
     gl_Position = gl_ModelViewProjectionMatrix * scaledPosition;

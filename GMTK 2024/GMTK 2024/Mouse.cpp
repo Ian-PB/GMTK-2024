@@ -38,13 +38,12 @@ void Mouse::draw(sf::RenderWindow& t_window)
 	{
 		if (thrown)
 		{
-			t_window.draw(body);
+			t_window.draw(sprite/*, &thrownShader*/);
 			t_window.draw(underShadow);
-			t_window.draw(sprite, &thrownShader);
 		}
 		else
 		{
-			t_window.draw(body);
+			//t_window.draw(body);
 			t_window.draw(sprite);
 		}
 	}
@@ -74,14 +73,14 @@ void Mouse::update(sf::Vector2f t_bearPos, int t_direction)
 			throwMovement();
 		}
 
-		if (canAttack)
+		if (landedBool)
 		{
 			Landed();
 		}
 
 
 		// if not thrown and not on benjamin...
-		else if (!thrown && !returned && !canAttack)
+		else if (!thrown && !returned && !landedBool)
 		{
 			returnToBear();
 		}
@@ -141,10 +140,10 @@ void Mouse::throwSelf(sf::Vector2f t_initialPos, sf::Vector2f t_target)
 	target = t_target;
 
 	// Shader info
-	thrownShader.setUniform("speed", throwSpeed);
+	//thrownShader.setUniform("speed", throwSpeed);
 
-	float throwLenght = sqrt(((positionThrownFrom.x - target.x) * (positionThrownFrom.x - target.x)) + ((positionThrownFrom.y - target.y) * (positionThrownFrom.y - target.y)));
-	thrownShader.setUniform("fullDistance", throwLenght);
+	//float throwLenght = sqrt(((positionThrownFrom.x - target.x) * (positionThrownFrom.x - target.x)) + ((positionThrownFrom.y - target.y) * (positionThrownFrom.y - target.y)));
+	//thrownShader.setUniform("fullDistance", throwLenght);
 }
 
 void Mouse::throwMovement()
@@ -171,7 +170,7 @@ void Mouse::throwMovement()
 	else
 	{
 		thrown = false;
-		canAttack = true;
+		landedBool = true;
 		framesPassedThrown = 0;
 	}
 
@@ -183,7 +182,7 @@ void Mouse::throwMovement()
 
 	framesPassedThrown++;
 	float secondsPassed = framesPassedThrown / 60.0f;
-	thrownShader.setUniform("time", secondsPassed);
+	//thrownShader.setUniform("time", secondsPassed);
 }
 
 void Mouse::Landed()
@@ -195,7 +194,7 @@ void Mouse::Landed()
 	else
 	{
 		landTimer = 0;
-		canAttack = false;
+		landedBool = false;
 	}
 }
 
@@ -223,19 +222,19 @@ void Mouse::animate(int t_direction)
 		// sprite.setTextureRect(sf::IntRect{ ((ax - 1) * 32), ((ay - 1) * 32), 32, 32 });
 		sprite.setTextureRect(sf::IntRect{ 0, (ay * 32), 32, 32 });
 	}
-	else if (thrown && !canAttack) // ay == 5)
+	else if (thrown) // ay == 5)
 	{
 		sprite.setTextureRect(sf::IntRect{ (ax * 16), 160, 16, 16 });
 	}
-	else if (!movingLeft && !thrown && !returned && !canAttack)
+	else if (!movingLeft && !thrown && !returned)
 	{
 		sprite.setTextureRect(sf::IntRect{ (ax * 16), 144, 16, 16 });
 	}
-	else if (movingLeft && !thrown && !returned && !canAttack) // ay == 7)
+	else if (movingLeft && !thrown && !returned) // ay == 7)
 	{
 		sprite.setTextureRect(sf::IntRect{ (ax * 16), 128, 16, 16 });
 	}
-	else if (!thrown && !returned && canAttack)
+	else if (!thrown && !returned)
 	{
 		sprite.setTextureRect(sf::IntRect{ 0, 128, 16, 16 });
 	}

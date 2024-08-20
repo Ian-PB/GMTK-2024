@@ -76,7 +76,7 @@ void Player::draw(sf::RenderWindow& t_window)
 
 	if (hitboxActive)
 	{
-		t_window.draw(hitbox);
+		//t_window.draw(hitbox);
 		t_window.draw(hitboxSprite);
 	}
 
