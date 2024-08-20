@@ -1,6 +1,7 @@
 #pragma once
 
 # include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Scenes.h"
 #include "Globals.h"
@@ -51,6 +52,8 @@ private:
 	sf::Sprite tilesSprite;
 	sf::Texture tilesTexture;
 
+	// Audio
+	sf::Music music;
 
 	// Enemies
 	MeleeEnemy meleeEnemies[10];

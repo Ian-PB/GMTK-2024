@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 
 #include "Mouse.h"
@@ -74,6 +75,16 @@ private:
 	int acounter = 0;
 	int ax = 1;
 	int ay = 5;
+
+	// Audio
+	sf::Sound sound;
+	sf::SoundBuffer attackhit;
+	sf::SoundBuffer attackmiss;
+	sf::SoundBuffer step;
+	sf::SoundBuffer recievedamage;
+	sf::SoundBuffer jump;
+	int stepCounter = 0;
+	bool stepVary = true;
 
 	// Movement
 	void move();

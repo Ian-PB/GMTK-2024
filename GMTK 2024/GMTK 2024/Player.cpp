@@ -42,6 +42,27 @@ Player::Player()
 	crosshair.setOrigin( 7.5, 7.5);
 	crosshair.setScale(4, 4);
 
+	// Audio
+	if (!attackhit.loadFromFile("ASSETS/AUDIO/attackhit.mp3"))
+	{
+		std::cout << "error with sound hit";
+	}
+	if (!attackmiss.loadFromFile("ASSETS/AUDIO/attackmiss.mp3"))
+	{
+		std::cout << "error with sound miss";
+	}
+	if (!jump.loadFromFile("ASSETS/AUDIO/jump.mp3"))
+	{
+		std::cout << "error with sound jump";
+	}
+	if (!step.loadFromFile("ASSETS/AUDIO/step.mp3"))
+	{
+		std::cout << "error with sound step";
+	}
+	if (!recievedamage.loadFromFile("ASSETS/AUDIO/takedamage.mp3"))
+	{
+		std::cout << "error with sound damage";
+	}
 
 	// Setup Shadow Shader
 	if (!shadow.loadFromFile("ASSETS\\SHADERS\\Shadow.vert", "ASSETS\\SHADERS\\Shadow.frag"))
@@ -192,6 +213,25 @@ void Player::move()
 	sprite.setPosition(position); // change hitbox position
 	body.setPosition(position); // change hitbox position
 	mouseHeldPos = { position.x + (width / 2.0f), position.y + ((height / 4.0f) * 3) }; // Update mouse held pos
+
+	stepCounter++;
+	if (stepCounter >= 30)
+	{
+		stepCounter = 0;
+		if (stepVary)
+		{
+			sound.setPitch(1.0f);
+			stepVary = false;
+		}
+		else
+		{
+			sound.setPitch(1.2f);
+			stepVary = true;
+		}
+
+		sound.setBuffer(step);
+		sound.play();
+	}
 }
 
 
@@ -298,12 +338,18 @@ void Player::throwMouse(sf::Vector2f t_target)
 {
 	// Acitvate mouse thrown
 	mouse.throwSelf(position, t_target);
+
+	sound.setBuffer(jump);
+	sound.play();
 }
 
 void Player::takeDamage(int t_damageAmount)
 {
 	if (!invinsable)
 	{
+		sound.setBuffer(recievedamage);
+		sound.play();
+
 		health -= t_damageAmount;
 		sprite.setColor(INVINSABLE_COLOR);
 	}
