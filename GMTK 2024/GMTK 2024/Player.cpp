@@ -2,31 +2,45 @@
 
 Player::Player()
 {
-	// Setup body
-	body.setFillColor(sf::Color::Green);
-	body.setSize({ (float)width, (float)height });
+	// Setup player
+
 	if (!texture.loadFromFile("ASSETS/IMAGES/bear.png"))
 	{
 		std::cout << "error with player image file";
 	}
-
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect{ 0, 128, 32, 32});
 	sprite.setScale(4, 4);
 	sprite.setOrigin(16, 16);
 	sprite.setPosition(position);
 
+	body.setFillColor(sf::Color::Green);
+	body.setSize({ (float)width, (float)height });
 	body.setTextureRect(sf::IntRect{ 0, 0, 32, 32 });
 	body.setOrigin(width / 2.0f, height / 2.0f);
 	body.setPosition(position);
+
+	if (!attackTexture.loadFromFile("ASSETS/IMAGES/attack.png"))
+	{
+		std::cout << "error with player image file";
+	}
+	hitboxSprite.setTexture(attackTexture);
+	hitboxSprite.setTextureRect(sf::IntRect{ 0, 0, 32, 16 });
+	hitboxSprite.setOrigin(16, 8);
+	hitboxSprite.setScale(4, 4);
 
 	hitbox.setFillColor(sf::Color::Red);
 	hitbox.setSize({ (float)hitboxWidth, (float)hitboxHeight });
 	hitbox.setOrigin(hitboxWidth / 2.0f, hitboxHeight / 2.0f);
 
-	crosshair.setFillColor(sf::Color::Red);
-	crosshair.setRadius( 20 );
-	crosshair.setOrigin( 20, 20);
+
+	if (!crosshairTexture.loadFromFile("ASSETS/IMAGES/crosshair.png"))
+	{
+		std::cout << "error with crosshair image file";
+	}
+	crosshair.setTexture(crosshairTexture);
+	crosshair.setOrigin( 7.5, 7.5);
+	crosshair.setScale(4, 4);
 
 
 	// Setup Shadow Shader
@@ -63,8 +77,8 @@ void Player::draw(sf::RenderWindow& t_window)
 	if (hitboxActive)
 	{
 		t_window.draw(hitbox);
+		t_window.draw(hitboxSprite);
 	}
-
 
 	// Mouse Draw
 	mouse.draw(t_window);
@@ -228,6 +242,9 @@ void Player::attack(sf::Vector2f t_mousePos)
 
 			hitbox.setRotation(hitboxRotation + 90);
 			hitbox.setPosition(attackPos);
+
+			hitboxSprite.setRotation(hitboxRotation + 90);
+			hitboxSprite.setPosition(attackPos);
 		}
 	}
 	else
@@ -235,6 +252,26 @@ void Player::attack(sf::Vector2f t_mousePos)
 		attackTimer = 0;
 		hitboxActive = false;
 		attacking = false;
+	}
+
+	aFrameCount++;
+	if (aFrameCount > 6)
+	{
+		aFrameCount = 0;
+		attackFrame++;
+	}
+	if (attackFrame > 6)
+	{
+		attackFrame = 0;
+	}
+
+	if (mouse.returned)
+	{
+		hitboxSprite.setTextureRect(sf::IntRect{ ((attackFrame - 1) * 32), 0, 32, 16 });
+	}
+	else
+	{
+		hitboxSprite.setTextureRect(sf::IntRect{ ((attackFrame - 1) * 32), 16, 32, 16 });
 	}
 }
 
@@ -280,6 +317,9 @@ void Player::attackCooldown()
 	{
 		cooldownTimer = 0;
 		canAttack = true;
+
+		aFrameCount = 0;
+		attackFrame = 1;
 	}
 }
 
@@ -302,8 +342,6 @@ sf::Vector2f Player::scaleVectorLenght(sf::Vector2f t_startPoint, sf::Vector2f t
 
 void Player::animate()
 {
-	// std::cout << "I AM ANIMATING!!!!!" << std::endl;
-
 	acounter++;
 	if (acounter > 5)
 	{
@@ -345,6 +383,4 @@ void Player::animate()
 	{
 		sprite.setTextureRect(sf::IntRect{ 0, 128, 32, 32 });
 	}
-
-
 }
