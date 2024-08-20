@@ -8,7 +8,7 @@ void Enemy::draw(sf::RenderWindow& t_window)
 {
 	if (alive)
 	{
-		t_window.draw(hitbox);
+		// t_window.draw(hitbox);
 		t_window.draw(sprite);
 	}
 }
@@ -43,6 +43,7 @@ void Enemy::respawn(sf::Vector2f t_playerPos)
 	// Reset position
 	position = newPos;
 	hitbox.setPosition(position);
+	sprite.setPosition(position);
 
 	// Reset Health
 	health = maxHealth;
@@ -141,6 +142,7 @@ void Enemy::knockbackMovement()
 
 	// Set the position of the body
 	hitbox.setPosition(position);
+	sprite.setPosition(position);
 }
 
 void Enemy::invulnerable()

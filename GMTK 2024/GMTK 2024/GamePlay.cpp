@@ -99,6 +99,9 @@ void GamePlay::update(sf::Time t_deltaTime, sf::RenderWindow& t_window)
 	{
 		if (meleeEnemies[i].alive)
 		{
+			meleeEnemies[i].animate();
+
+
 			if (!meleeEnemies[i].canTakeDmg)
 			{
 				meleeEnemies[i].invulnerable();
